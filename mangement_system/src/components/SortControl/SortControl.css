@@ -1,0 +1,61 @@
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2b3a5c;
+}
+
+.sort-control label {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.sort-control .select select {
+  appearance: none;
+  height: 40px;
+  min-width: 150px;
+  padding-inline: 14px 36px;
+  border: 1px solid #e1e8f4;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a2340;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sort-control .select {
+  position: relative;
+}
+
+.sort-control .select__chevron {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #5b6b8c;
+  pointer-events: none;
+}
+
+.sort-control__dir {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e1e8f4;
+  border-radius: 8px;
+  background: #fff;
+  color: #2f62c9;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sort-control__dir:hover {
+  background: #eef4ff;
+}
+
+.sort-control__dir:focus-visible,
+.sort-control .select select:focus-visible {
+  outline: 2px solid #2f62c9;
+  outline-offset: 1px;
+}
