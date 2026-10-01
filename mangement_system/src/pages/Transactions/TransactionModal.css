@@ -9,20 +9,23 @@
 }
 
 .transaction-modal {
-  width: min(700px, 100%);
-  max-height: 90vh;
+  width: min(820px, 100%);
+  max-height: 92vh;
   overflow-y: auto;
-  background: #fff;
+  background: #f7f9fd;
   border-radius: 12px;
   color: #1a2340;
 }
 
+/* ---------- Header / footer ---------- */
 .transaction-modal__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
+  background: #fff;
   border-bottom: 1px solid #e1e8f4;
+  border-radius: 12px 12px 0 0;
 }
 
 .transaction-modal__title {
@@ -32,7 +35,6 @@
   gap: 10px;
   font-size: 18px;
   font-weight: 700;
-  color: #1a2340;
 }
 
 .transaction-modal__title svg {
@@ -56,19 +58,8 @@
 }
 
 .transaction-modal__body {
-  padding: 24px 20px;
-  min-height: 160px;
-}
-
-.transaction-modal__id {
-  margin: 0 0 8px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.transaction-modal__hint {
-  margin: 0;
-  color: #5b6b8c;
+  padding: 20px;
+  min-height: 200px;
 }
 
 .transaction-modal__footer {
@@ -97,4 +88,214 @@
 .transaction-modal__btn:focus-visible {
   outline: 2px solid #2f62c9;
   outline-offset: 2px;
+}
+
+/* ---------- Loading / error states ---------- */
+.tm-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 16px;
+  color: #5b6b8c;
+  font-size: 14px;
+}
+
+.tm-state--error {
+  color: #c62828;
+  flex-direction: column;
+  text-align: center;
+}
+
+.tm-spin {
+  animation: tm-spin 1s linear infinite;
+}
+
+@keyframes tm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-spin {
+    animation: none;
+  }
+}
+
+.tm-retry-btn {
+  margin-top: 4px;
+  height: 34px;
+  padding: 0 18px;
+  border: 1px solid #cfdcf5;
+  border-radius: 6px;
+  background: #fff;
+  color: #2f62c9;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tm-retry-btn:hover {
+  background: #eef4ff;
+}
+
+/* ---------- Info panel ---------- */
+.tm-info-panel {
+  background: #fff;
+  border: 1px solid #e1e8f4;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.tm-info-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b3a5c;
+}
+
+.tm-info-panel__header svg {
+  color: #2f62c9;
+}
+
+.tm-info-grid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 24px;
+}
+
+@media (max-width: 560px) {
+  .tm-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tm-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  font-size: 14px;
+  border-top: 1px solid #eef1f8;
+}
+
+.tm-info-row dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5b6b8c;
+}
+
+.tm-info-row dt svg {
+  color: #8ba0c9;
+}
+
+.tm-info-row dd {
+  margin: 0;
+  font-weight: 600;
+  color: #1a2340;
+}
+
+/* ---------- Badges ---------- */
+.tm-badge {
+  display: inline-block;
+  min-width: 56px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.tm-badge--active {
+  background: #dcf5e3;
+  color: #1f8a4c;
+}
+
+.tm-badge--draft {
+  background: #eef1f8;
+  color: #5b6b8c;
+}
+
+.tm-user-disabled {
+  color: #a7b1c7;
+  font-size: 12px;
+  cursor: not-allowed;
+}
+
+/* ---------- Items table ---------- */
+.tm-items {
+  background: #fff;
+  border: 1px solid #e1e8f4;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.tm-items h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b3a5c;
+}
+
+.tm-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e1e8f4;
+  border-radius: 10px;
+}
+
+.tm-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tm-table th,
+.tm-table td {
+  padding: 10px 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tm-table .tm-col-product {
+  text-align: start;
+  font-weight: 600;
+}
+
+.tm-table .tm-col-total {
+  font-weight: 700;
+}
+
+.tm-table thead th {
+  background: #eef3fb;
+  color: #2b3a5c;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tm-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tm-table tbody tr + tr td {
+  border-top: 1px solid #e1e8f4;
+}
+
+.tm-table tbody tr:hover td {
+  background: #f2f6ff;
+}
+
+.tm-table__message {
+  padding: 28px 16px !important;
+  color: #5b6b8c;
 }

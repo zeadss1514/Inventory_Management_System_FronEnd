@@ -79,7 +79,8 @@ export default function TransactionsPage() {
       if (!q) return true;
       return (
         getEntityName(tx.TransactedFrom).toLowerCase().includes(q) ||
-        getEntityName(tx.TransactedTo).toLowerCase().includes(q)
+        getEntityName(tx.TransactedTo).toLowerCase().includes(q) ||
+        String(tx._id ?? "").toLowerCase().includes(q)
       );
     });
   }, [transactions, search, fromType, toType, statusFilter]);

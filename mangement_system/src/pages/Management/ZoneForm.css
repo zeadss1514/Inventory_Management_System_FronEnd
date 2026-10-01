@@ -1,0 +1,11 @@
+.zf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .zf-row {
+    grid-template-columns: 1fr;
+  }
+}

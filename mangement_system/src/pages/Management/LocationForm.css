@@ -1,0 +1,30 @@
+.inv-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.inv-section + .inv-section {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid #e1e8f4;
+}
+
+.inv-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a2340;
+}
+
+.inv-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .inv-row {
+    grid-template-columns: 1fr;
+  }
+}

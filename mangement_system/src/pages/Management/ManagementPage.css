@@ -1,0 +1,68 @@
+.management-page {
+  padding: 28px 32px 40px;
+  color: #1a2340;
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.entity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e1e8f4;
+  border-radius: 12px;
+}
+
+.entity-card__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: #e4ecfb;
+  color: #2f62c9;
+  margin-bottom: 4px;
+}
+
+.entity-card__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.entity-card__subtitle {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #5b6b8c;
+  line-height: 1.6;
+}
+
+.entity-card__btn {
+  height: 38px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #2f62c9;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: stretch;
+}
+
+.entity-card__btn:hover {
+  background: #2853ad;
+}
+
+.entity-card__btn:focus-visible {
+  outline: 2px solid #2f62c9;
+  outline-offset: 2px;
+}

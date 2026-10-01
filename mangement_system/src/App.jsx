@@ -6,6 +6,8 @@ import WarehousesPage from "./pages/Warehouses/WarehousesPage";
 import SitesPage from "./pages/Sites/SitesPage";
 import PurchasesPage from "./pages/Purchases/PurchasesPage";
 import TransactionsPage from "./pages/Transactions/TransactionsPage";
+import ManagementPage from "./pages/Management/ManagementPage";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,7 @@ export default function App() {
           <Route path="/users" element={<PlaceholderPage title="المستخدمين" />} />
           <Route path="/transfers" element={<TransactionsPage />} />
           <Route path="/purchases" element={<PurchasesPage />} />
+          <Route path="/management" element={<ManagementPage />} />
           <Route path="/logs" element={<PlaceholderPage title="logs" />} />
         </Route>
       </Routes>

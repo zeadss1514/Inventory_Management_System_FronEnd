@@ -9,6 +9,7 @@ import {
   Users,
   ArrowLeftRight,
   ShoppingCart,
+  Settings2,
   FileText,
 } from "lucide-react";
 import "./Sidebar.css";
@@ -23,6 +24,7 @@ const navItems = [
   { to: "/users", label: "المستخدمين", icon: Users },
   { to: "/transfers", label: "التنقلات", icon: ArrowLeftRight },
   { to: "/purchases", label: "المشتريات", icon: ShoppingCart },
+  { to: "/management", label: "الإدارة", icon: Settings2 },
   { to: "/logs", label: "logs", icon: FileText },
 ];
 
