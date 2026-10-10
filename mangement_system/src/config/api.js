@@ -1,6 +1,6 @@
 // Change the server address (or any path) here and the whole app follows.
-export const API_BASE_URL = "https://inventory-management-system-one-ashen-72.vercel.app";
-// export const API_BASE_URL = "http://localhost:3000";
+// export const API_BASE_URL = "https://inventory-management-system-one-ashen-72.vercel.app";
+export const API_BASE_URL = "http://localhost:3000";
 
 export const API_ENDPOINTS = {
   products: `${API_BASE_URL}/product/`,
@@ -30,4 +30,13 @@ export const API_ENDPOINTS = {
   createTransaction: `${API_BASE_URL}/transact`,
   addTransactionItem: (transactionId) => `${API_BASE_URL}/transact/${transactionId}`,
   activateTransaction: (transactionId) => `${API_BASE_URL}/transact/${transactionId}/activate`,
+  usageActive: `${API_BASE_URL}/usage/`,
+  usageDraft: `${API_BASE_URL}/usage/draft`,
+  usageDetail: (id) => `${API_BASE_URL}/usage/${id}`,
+  createUsage: `${API_BASE_URL}/usage`,
+  addUsageItem: (id) => `${API_BASE_URL}/usage/${id}`,
+  activateUsage: (id) => `${API_BASE_URL}/usage/${id}/activate`,
+  home: `${API_BASE_URL}/`,
+productsBySite: (siteId) => `${API_BASE_URL}/product/site/${siteId}`,
+productsByInventory: (inventoryId) => `${API_BASE_URL}/product/inventory/${inventoryId}`,
 };

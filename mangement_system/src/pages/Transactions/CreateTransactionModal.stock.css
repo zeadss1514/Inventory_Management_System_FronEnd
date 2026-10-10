@@ -1,0 +1,32 @@
+/* APPEND to CreateTransactionModal.css — styles for the typed quantity input
+   and the stock hint. (The old stepper showed the number in a <span>.) */
+.qty-stepper__input {
+  width: 64px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #e1e8f4;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-weight: 600;
+}
+
+.qty-stepper__input:disabled {
+  background: #f4f6fb;
+  color: #7c8bab;
+}
+
+.qty-stepper__input--invalid {
+  border-color: #c62828;
+  background: #fff5f5;
+}
+
+.qty-hint {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: #5b6b8c;
+}
+
+.qty-hint--error {
+  color: #c62828;
+}

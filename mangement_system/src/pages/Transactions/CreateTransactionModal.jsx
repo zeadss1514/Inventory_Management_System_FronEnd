@@ -17,7 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { API_ENDPOINTS } from "../../config/api";
-import useProducts from "../../hooks/useProducts";
+import useDestinationProducts from "../../hooks/useDestinationProducts";
 import useSites from "../../hooks/useSites";
 import useWarehouses from "../../hooks/useWarehouses";
 import TransactionItemRow from "./TransactionItemRow";
@@ -103,7 +103,9 @@ export default function CreateTransactionModal({ onClose, onCreated }) {
   const [createError, setCreateError] = useState(null);
 
   // Step: items
-  const { products, status: productsStatus } = useProducts();
+  // Only the products that exist in the SOURCE place (what can actually be moved),
+  // each with its `stock` there. Empty until a source is chosen.
+  const { products, status: productsStatus } = useDestinationProducts(fromType, fromId);
   const [items, setItems] = useState([]);
   const [itemSearch, setItemSearch] = useState("");
 
@@ -175,6 +177,17 @@ export default function CreateTransactionModal({ onClose, onCreated }) {
     }
   }
 
+  // Stock left for this row's product in the source place: its stock minus what
+  // other SAVED rows of the same product already take. null = stock unknown.
+  function getAvailable(item) {
+    const product = products.find((p) => p._id === item.productId);
+    if (!product || typeof product.stock !== "number") return null;
+    const takenElsewhere = items
+      .filter((it) => it.localId !== item.localId && it.productId === item.productId && it.status === "saved")
+      .reduce((sum, it) => sum + (Number(it.quantity) || 0), 0);
+    return Math.max(0, product.stock - takenElsewhere);
+  }
+
   function addItemRow() {
     setItems((prev) => [
       ...prev,
@@ -197,6 +210,14 @@ export default function CreateTransactionModal({ onClose, onCreated }) {
     if (!item || !transactionId) return;
     if (!item.productId || Number(item.quantity) <= 0) {
       updateItem(localId, { status: "error", error: "اختر منتجاً وأدخل كمية صحيحة" });
+      return;
+    }
+    const available = getAvailable(item);
+    if (available !== null && Number(item.quantity) > available) {
+      updateItem(localId, {
+        status: "error",
+        error: `الكمية (${Number(item.quantity)}) أكبر من المتوفر (${available})`,
+      });
       return;
     }
     updateItem(localId, { status: "saving", error: null });
@@ -407,6 +428,7 @@ export default function CreateTransactionModal({ onClose, onCreated }) {
                             key={item.localId}
                             item={item}
                             products={products}
+                            available={getAvailable(item)}
                             onChange={(patch) => updateItem(item.localId, patch)}
                             onConfirm={() => confirmItem(item.localId)}
                             onRemove={() => removeItem(item.localId)}
@@ -423,6 +445,9 @@ export default function CreateTransactionModal({ onClose, onCreated }) {
 
                   {productsStatus === "error" && (
                     <p className="transaction-wizard__error">تعذّر تحميل قائمة المنتجات.</p>
+                  )}
+                  {productsStatus === "success" && products.length === 0 && (
+                    <p className="transaction-wizard__error">لا توجد منتجات في المصدر المحدد.</p>
                   )}
                 </div>
               )}

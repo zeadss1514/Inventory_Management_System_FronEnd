@@ -9,6 +9,7 @@ import {
   Users,
   ArrowLeftRight,
   ShoppingCart,
+  ClipboardList,
   Settings2,
   FileText,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const navItems = [
   { to: "/users", label: "المستخدمين", icon: Users },
   { to: "/transfers", label: "التنقلات", icon: ArrowLeftRight },
   { to: "/purchases", label: "المشتريات", icon: ShoppingCart },
+  { to: "/usage", label: "الاستخدام", icon: ClipboardList },
   { to: "/management", label: "الإدارة", icon: Settings2 },
   { to: "/logs", label: "logs", icon: FileText },
 ];

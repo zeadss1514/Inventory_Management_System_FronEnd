@@ -7,13 +7,13 @@ import SitesPage from "./pages/Sites/SitesPage";
 import PurchasesPage from "./pages/Purchases/PurchasesPage";
 import TransactionsPage from "./pages/Transactions/TransactionsPage";
 import ManagementPage from "./pages/Management/ManagementPage";
-
+import UsagePage from "./pages/Usage/UsagePage"
+import HomePage from "./pages/Home/HomePage"
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<PlaceholderPage title="الرئيسية" />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/regions" element={<PlaceholderPage title="المناطق" />} />
           <Route path="/warehouses" element={<WarehousesPage />} />
@@ -23,6 +23,8 @@ export default function App() {
           <Route path="/purchases" element={<PurchasesPage />} />
           <Route path="/management" element={<ManagementPage />} />
           <Route path="/logs" element={<PlaceholderPage title="logs" />} />
+          <Route path="usage" element={<UsagePage />} />
+          <Route index element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
