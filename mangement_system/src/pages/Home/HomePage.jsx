@@ -26,11 +26,11 @@ import "./HomePage.css";
 
 const QUICK_LINKS = [
   { to: "/purchases", label: "المشتريات", hint: "فواتير الشراء وتفعيلها", icon: ShoppingCart },
-  { to: "/transfers", label: "التنقلات", hint: "نقل المنتجات بين الأماكن", icon: ArrowLeftRight },
-  { to: "/usage", label: "الاستخدام", hint: "تسجيل ما يُستهلك من المنتجات", icon: ClipboardList },
+  { to: "/transfers", label: "التنقلات", hint: "نقل الأصناف بين الأماكن", icon: ArrowLeftRight },
+  { to: "/usage", label: "الاستخدام", hint: "تسجيل ما يُستهلك من الأصناف", icon: ClipboardList },
   { to: "/warehouses", label: "المخازن", hint: "عرض المخازن ومخزونها", icon: Warehouse },
   { to: "/locations", label: "المواقع", hint: "عرض المواقع ومخزونها", icon: MapPin },
-  { to: "/products", label: "المنتجات", hint: "قائمة المنتجات ووحداتها", icon: Package },
+  { to: "/products", label: "الأصناف", hint: "قائمة الأصناف ووحداتها", icon: Package },
 ];
 
 const todayLabel = () =>
@@ -108,7 +108,7 @@ export default function HomePage() {
             {todayLabel()}
           </span>
           <h1>مرحباً بك في نظام إدارة المخزون</h1>
-          <p>تابع مشترياتك وتنقلات منتجاتك واستخدامها بين المخازن والمواقع من مكان واحد.</p>
+          <p>تابع مشترياتك وتنقلات صنفاتك واستخدامها بين المخازن والمواقع من مكان واحد.</p>
         </div>
         <div className="home-hero__actions">
           <Link to="/purchases" className="home-hero__btn home-hero__btn--primary">

@@ -21,7 +21,7 @@ import { getEntityTypeLabel } from "../../utils/entityType";
 import "./TransactionModal.css";
 
 const ITEM_COLUMNS = [
-  { label: "المنتج", icon: Box },
+  { label: "الصنف", icon: Box },
   { label: "الوحدة", icon: Ruler },
   { label: "الكمية", icon: Hash },
 ];

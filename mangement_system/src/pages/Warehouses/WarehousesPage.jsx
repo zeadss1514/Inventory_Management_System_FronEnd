@@ -32,13 +32,13 @@ const SORT_OPTIONS = [
   { value: "name", label: "الاسم" },
   { value: "zone", label: "المنطقة" },
   { value: "active", label: "الحالة" },
-  { value: "products", label: "عدد المنتجات" },
+  { value: "products", label: "عدد الأصناف" },
 ];
 
 const COLUMNS = [
   { label: "الموقع", icon: Warehouse, className: "col-name" },
   { label: "المنطقة", icon: MapPinned },
-  { label: "عدد المنتجات", icon: Layers },
+  { label: "عدد الأصناف", icon: Layers },
   { label: "الحالة", icon: Activity },
   { label: "إجراءات", icon: Settings },
 ];

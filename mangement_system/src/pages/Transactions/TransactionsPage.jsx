@@ -132,7 +132,7 @@ export default function TransactionsPage() {
     <div className="transactions-page">
       <PageHeader
         title="التنقلات"
-        subtitle="إدارة جميع عمليات نقل المنتجات بين المواقع والمخازن"
+        subtitle="إدارة جميع عمليات نقل الأصناف بين المواقع والمخازن"
         icon={ArrowLeftRight}
         action={
           <button type="button" className="new-transaction-btn" onClick={() => setShowCreateModal(true)}>

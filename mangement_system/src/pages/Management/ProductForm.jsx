@@ -72,12 +72,12 @@ function CreateProductForm() {
       <ProductFields form={form} onChange={update} disabled={submitting} />
 
       {error && <p className="pf-error">{error}</p>}
-      {success && <p className="pf-success">تم إنشاء المنتج بنجاح.</p>}
+      {success && <p className="pf-success">تم إنشاء الصنف بنجاح.</p>}
 
       <div className="pf-actions">
         <button type="submit" className="pf-submit" disabled={!canSubmit}>
           {submitting && <Loader2 size={16} className="pf-spin" aria-hidden="true" />}
-          إنشاء المنتج
+          إنشاء الصنف
         </button>
       </div>
     </form>
@@ -147,14 +147,14 @@ function EditProductForm() {
   return (
     <form className="pf-form" onSubmit={handleSubmit}>
       <div className="pf-field">
-        <label htmlFor="pf-select-product">اختر منتجاً للتعديل</label>
+        <label htmlFor="pf-select-product">اختر صنفاً للتعديل</label>
         <select
           id="pf-select-product"
           value={productId}
           onChange={(e) => handleSelect(e.target.value)}
           disabled={status === "loading"}
         >
-          <option value="">اختر منتجاً...</option>
+          <option value="">اختر صنفاً...</option>
           {products.map((p) => (
             <option key={p._id} value={p._id}>
               {p.name}
@@ -171,7 +171,7 @@ function EditProductForm() {
       )}
 
       {error && <p className="pf-error">{error}</p>}
-      {success && <p className="pf-success">تم تحديث المنتج بنجاح.</p>}
+      {success && <p className="pf-success">تم تحديث الصنف بنجاح.</p>}
 
       <div className="pf-actions">
         <button type="submit" className="pf-submit" disabled={!canSubmit}>

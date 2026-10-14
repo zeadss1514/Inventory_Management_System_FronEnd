@@ -16,8 +16,8 @@ const CONFIG = {
     selectLabel: "اختر موقعاً للتعديل",
     selectPlaceholder: "اختر موقعاً...",
     dataTitle: "بيانات الموقع",
-    addTitle: "إضافة منتج إلى الموقع",
-    productAdded: "تمت إضافة المنتج إلى الموقع بنجاح.",
+    addTitle: "إضافة صنف إلى الموقع",
+    productAdded: "تمت إضافة الصنف إلى الموقع بنجاح.",
   },
 };
 

@@ -15,9 +15,9 @@ export default function InvoiceItemRow({ item, products, onChange, onConfirm, on
           value={item.productId}
           onChange={(e) => onChange({ productId: e.target.value })}
           disabled={locked}
-          aria-label="اختر منتجاً"
+          aria-label="اختر صنفاً"
         >
-          <option value="">اختر منتجاً...</option>
+          <option value="">اختر صنفاً...</option>
           {products.map((p) => (
             <option key={p._id} value={p._id}>
               {p.name}

@@ -27,7 +27,7 @@ const STATUS_OPTIONS = [
 ];
 
 const COLUMNS = [
-  { label: "المنتج", icon: Box, className: "col-product" },
+  { label: "الصنف", icon: Box, className: "col-product" },
   { label: "الكود", icon: Hash },
   { label: "الكمية الإجمالية", icon: Layers },
   { label: "وحدة القياس", icon: Ruler },
@@ -75,7 +75,7 @@ export default function ProductsPage() {
 
   return (
     <div className="products-page">
-      <PageHeader title="المنتجات" subtitle="إدارة جميع المنتجات في النظام" />
+      <PageHeader title="الأصناف" subtitle="إدارة جميع الأصناف في النظام" />
 
       <section className="card">
         {/* Filters */}
@@ -104,8 +104,8 @@ export default function ProductsPage() {
               type="search"
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
-              placeholder="ابحث عن منتج..."
-              aria-label="ابحث عن منتج"
+              placeholder="ابحث عن صنف..."
+              aria-label="ابحث عن صنف"
             />
             <Search size={18} className="search__icon" aria-hidden="true" />
           </div>
@@ -132,7 +132,7 @@ export default function ProductsPage() {
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message">
                     <Loader2 size={18} className="spin" aria-hidden="true" />
-                    جاري تحميل المنتجات...
+                    جاري تحميل الأصناف...
                   </td>
                 </tr>
               )}
@@ -140,7 +140,7 @@ export default function ProductsPage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message table__message--error">
-                    تعذّر تحميل المنتجات. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    تعذّر تحميل الأصناف. تأكد من تشغيل الخادم ثم أعد المحاولة.
                     <button type="button" className="retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -151,7 +151,7 @@ export default function ProductsPage() {
               {status === "success" && pageItems.length === 0 && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message">
-                    لا توجد منتجات مطابقة.
+                    لا توجد صنفات مطابقة.
                   </td>
                 </tr>
               )}
@@ -202,7 +202,7 @@ export default function ProductsPage() {
         <div className="table-footer">
           <Pagination page={currentPage} totalPages={totalPages} onPageChange={setPage} />
           <span className="table-footer__total">
-            إجمالي المنتجات: <strong>{filtered.length}</strong>
+            إجمالي الأصناف: <strong>{filtered.length}</strong>
           </span>
         </div>
       </section>

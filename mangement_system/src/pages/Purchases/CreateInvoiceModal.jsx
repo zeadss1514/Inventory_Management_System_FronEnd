@@ -44,7 +44,7 @@ const DESTINATION_TYPES = [
 ];
 
 const ITEM_COLUMNS = [
-  { label: "المنتج", icon: Box },
+  { label: "الصنف", icon: Box },
   { label: "الوحدة", icon: Ruler },
   { label: "الكمية", icon: Hash },
   { label: "سعر الوحدة", icon: DollarSign },
@@ -198,7 +198,7 @@ export default function CreateInvoiceModal({ onClose, onCreated }) {
     const item = items.find((it) => it.localId === localId);
     if (!item || !invoiceId) return;
     if (!item.productId || Number(item.quantity) <= 0) {
-      updateItem(localId, { status: "error", error: "اختر منتجاً وأدخل كمية صحيحة" });
+      updateItem(localId, { status: "error", error: "اختر صنفاً وأدخل كمية صحيحة" });
       return;
     }
     updateItem(localId, { status: "saving", error: null });
@@ -380,8 +380,8 @@ export default function CreateInvoiceModal({ onClose, onCreated }) {
                         type="search"
                         value={itemSearch}
                         onChange={(e) => setItemSearch(e.target.value)}
-                        placeholder="ابحث عن منتج..."
-                        aria-label="ابحث عن منتج"
+                        placeholder="ابحث عن صنف..."
+                        aria-label="ابحث عن صنف"
                       />
                       <Search size={16} className="search__icon" aria-hidden="true" />
                     </div>
@@ -429,7 +429,7 @@ export default function CreateInvoiceModal({ onClose, onCreated }) {
                   </button>
 
                   {productsStatus === "error" && (
-                    <p className="invoice-modal__error">تعذّر تحميل قائمة المنتجات.</p>
+                    <p className="invoice-modal__error">تعذّر تحميل قائمة الأصناف.</p>
                   )}
 
                   <div className="items-total">

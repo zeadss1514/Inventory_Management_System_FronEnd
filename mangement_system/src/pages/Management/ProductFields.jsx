@@ -13,7 +13,7 @@ export default function ProductFields({ form, onChange, disabled }) {
       </label>
 
       <div className="pf-field">
-        <label htmlFor="pf-name">اسم المنتج</label>
+        <label htmlFor="pf-name">اسم الصنف</label>
         <input
           id="pf-name"
           type="text"

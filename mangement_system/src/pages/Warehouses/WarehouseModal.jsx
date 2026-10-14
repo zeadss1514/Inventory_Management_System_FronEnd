@@ -21,9 +21,9 @@ import { getZoneName } from "../../utils/zone";
 import "./WarehouseModal.css";
 
 const PRODUCT_COLUMNS = [
-  { label: "اسم المنتج", icon: Box },
+  { label: "اسم الصنف", icon: Box },
   { label: "وحدة القياس", icon: Ruler },
-  { label: "كود المنتج", icon: Barcode },
+  { label: "كود الصنف", icon: Barcode },
   { label: "المخزون الحالي", icon: Hash },
   { label: "الحد الأدنى", icon: TrendingDown },
   { label: "الحد الأقصى", icon: TrendingUp },
@@ -152,15 +152,15 @@ export default function WarehouseModal({ warehouseId, onClose }) {
                 <div className="wh-products__header">
                   <h3>
                     <Box size={16} aria-hidden="true" />
-                    المنتجات داخل الموقع
+                    الأصناف داخل الموقع
                   </h3>
                   <div className="wh-products__search">
                     <input
                       type="search"
                       value={productSearch}
                       onChange={(e) => setProductSearch(e.target.value)}
-                      placeholder="ابحث عن منتج..."
-                      aria-label="ابحث عن منتج داخل الموقع"
+                      placeholder="ابحث عن صنف..."
+                      aria-label="ابحث عن صنف داخل الموقع"
                     />
                     <Search size={16} className="wh-products__search-icon" aria-hidden="true" />
                   </div>
@@ -184,7 +184,7 @@ export default function WarehouseModal({ warehouseId, onClose }) {
                       {filteredProducts.length === 0 && (
                         <tr>
                           <td colSpan={PRODUCT_COLUMNS.length} className="wh-table__message">
-                            لا توجد منتجات مطابقة.
+                            لا توجد صنفات مطابقة.
                           </td>
                         </tr>
                       )}

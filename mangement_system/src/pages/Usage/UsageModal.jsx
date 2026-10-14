@@ -27,7 +27,7 @@ import {
 import "./UsageModal.css";
 
 const ITEM_COLUMNS = [
-  { label: "المنتج", icon: Box },
+  { label: "الصنف", icon: Box },
   { label: "الوحدة", icon: Ruler },
   { label: "الكمية", icon: Hash },
 ];

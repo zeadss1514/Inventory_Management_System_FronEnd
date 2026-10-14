@@ -58,7 +58,7 @@ const COLUMNS = [
   { label: "التاريخ", icon: Calendar },
   { label: "الموقع / المخزن", icon: MapPinned },
   { label: "النوع", icon: Warehouse },
-  { label: "المنتج", icon: Package },
+  { label: "الصنف", icon: Package },
   { label: "الكمية", icon: Hash },
   { label: "الحالة", icon: CheckCircle2 },
   { label: "إجراءات", icon: MoreVertical },
@@ -140,7 +140,7 @@ export default function UsagePage() {
     <div className="usage-page">
       <PageHeader
         title="الاستخدام"
-        subtitle="إدارة جميع عمليات استخدام المنتجات"
+        subtitle="إدارة جميع عمليات استخدام الأصناف"
         action={
           <button type="button" className="usage-new-btn" onClick={() => setShowCreateModal(true)}>
             <Plus size={18} aria-hidden="true" />
@@ -156,7 +156,7 @@ export default function UsagePage() {
               type="search"
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
-              placeholder="ابحث عن موقع أو منتج..."
+              placeholder="ابحث عن موقع أو صنف..."
               aria-label="ابحث في عمليات الاستخدام"
             />
             <Search size={18} className="usage-search__icon" aria-hidden="true" />

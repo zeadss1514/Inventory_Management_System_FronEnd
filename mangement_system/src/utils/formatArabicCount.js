@@ -1,11 +1,11 @@
-// Basic Arabic plural rules for "منتج" (product): 0, 1, 2, 3-10, 11+ each read differently.
+// Basic Arabic plural rules for "صنف" (product): 0, 1, 2, 3-10, 11+ each read differently.
 export function formatProductsCount(count) {
   const n = Number(count) || 0;
-  if (n === 0) return "لا توجد منتجات";
-  if (n === 1) return "منتج واحد";
-  if (n === 2) return "منتجان";
-  if (n >= 3 && n <= 10) return `${n} منتجات`;
-  return `${n} منتجاً`;
+  if (n === 0) return "لا توجد صنفات";
+  if (n === 1) return "صنف واحد";
+  if (n === 2) return "صنفان";
+  if (n >= 3 && n <= 10) return `${n} صنفات`;
+  return `${n} صنفاً`;
 }
 
 // inSiteProducts might arrive as a number already, or as an array of product

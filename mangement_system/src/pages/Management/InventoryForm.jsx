@@ -16,8 +16,8 @@ const CONFIG = {
     selectLabel: "اختر مخزناً للتعديل",
     selectPlaceholder: "اختر مخزناً...",
     dataTitle: "بيانات المخزن",
-    addTitle: "إضافة منتج إلى المخزن",
-    productAdded: "تمت إضافة المنتج إلى المخزن بنجاح.",
+    addTitle: "إضافة صنف إلى المخزن",
+    productAdded: "تمت إضافة الصنف إلى المخزن بنجاح.",
   },
 };
 

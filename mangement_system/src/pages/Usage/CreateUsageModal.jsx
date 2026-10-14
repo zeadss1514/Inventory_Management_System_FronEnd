@@ -38,7 +38,7 @@ const DESTINATION_TYPES = [
 ];
 
 const ITEM_COLUMNS = [
-  { label: "المنتج", icon: Box },
+  { label: "الصنف", icon: Box },
   { label: "الوحدة", icon: Ruler },
   { label: "الكمية", icon: Hash },
   { label: "إجراءات", icon: Settings },
@@ -169,7 +169,7 @@ export default function CreateUsageModal({ onClose, onCreated }) {
     const item = items.find((it) => it.localId === localId);
     if (!item || !usageId) return;
     if (!item.productId || Number(item.quantity) <= 0) {
-      updateItem(localId, { status: "error", error: "اختر منتجاً وأدخل كمية صحيحة" });
+      updateItem(localId, { status: "error", error: "اختر صنفاً وأدخل كمية صحيحة" });
       return;
     }
     const available = getAvailable(item);
@@ -341,8 +341,8 @@ export default function CreateUsageModal({ onClose, onCreated }) {
                         type="search"
                         value={itemSearch}
                         onChange={(e) => setItemSearch(e.target.value)}
-                        placeholder="ابحث عن منتج..."
-                        aria-label="ابحث عن منتج"
+                        placeholder="ابحث عن صنف..."
+                        aria-label="ابحث عن صنف"
                       />
                       <Search size={16} className="uw-search__icon" aria-hidden="true" />
                     </div>
@@ -390,9 +390,9 @@ export default function CreateUsageModal({ onClose, onCreated }) {
                     إضافة صنف
                   </button>
 
-                  {productsStatus === "error" && <p className="uw-error">تعذّر تحميل قائمة المنتجات.</p>}
+                  {productsStatus === "error" && <p className="uw-error">تعذّر تحميل قائمة الأصناف.</p>}
                   {productsStatus === "success" && products.length === 0 && (
-                    <p className="uw-error">لا توجد منتجات في المكان المحدد.</p>
+                    <p className="uw-error">لا توجد صنفات في المكان المحدد.</p>
                   )}
 
                   <div className="uw-total">

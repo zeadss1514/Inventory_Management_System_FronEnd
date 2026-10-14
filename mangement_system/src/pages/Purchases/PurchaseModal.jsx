@@ -22,7 +22,7 @@ import "./PurchaseModal.css";
 const getTypeLabel = getEntityTypeLabel;
 
 const ITEM_COLUMNS = [
-  { label: "المنتج", icon: Box },
+  { label: "الصنف", icon: Box },
   { label: "الوحدة", icon: Ruler },
   { label: "الكمية", icon: Hash },
   { label: "سعر الوحدة", icon: DollarSign },

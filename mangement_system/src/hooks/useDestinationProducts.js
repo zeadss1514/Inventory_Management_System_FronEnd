@@ -49,7 +49,7 @@ export default function useDestinationProducts(type, id) {
           // no JSON body
         }
         if (!res.ok || json?.success === false) {
-          throw new Error(json?.message || "تعذّر تحميل قائمة المنتجات.");
+          throw new Error(json?.message || "تعذّر تحميل قائمة الأصناف.");
         }
         const data = json?.data ?? json;
         setState({

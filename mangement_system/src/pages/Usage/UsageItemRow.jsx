@@ -27,9 +27,9 @@ export default function UsageItemRow({ item, products, available, onChange, onCo
           value={item.productId}
           onChange={(e) => onChange({ productId: e.target.value, status: "draft", error: null })}
           disabled={locked}
-          aria-label="المنتج"
+          aria-label="الصنف"
         >
-          <option value="">اختر منتجاً...</option>
+          <option value="">اختر صنفاً...</option>
           {products.map((p) => {
             const hasStock = typeof p.stock === "number";
             return (

@@ -323,7 +323,7 @@ function AddProductSection({ inventoryId, onAdded, config }) {
       <h3 className="inv-section-title">{config.labels.addTitle}</h3>
 
       <div className="pf-field">
-        <label htmlFor="inv-product">المنتج</label>
+        <label htmlFor="inv-product">الصنف</label>
         <select
           id="inv-product"
           value={stock.productId}
@@ -331,7 +331,7 @@ function AddProductSection({ inventoryId, onAdded, config }) {
           disabled={status === "loading" || submitting}
           required
         >
-          <option value="">اختر منتجاً...</option>
+          <option value="">اختر صنفاً...</option>
           {products.map((p) => (
             <option key={p._id} value={p._id}>
               {p.name}
@@ -395,7 +395,7 @@ function AddProductSection({ inventoryId, onAdded, config }) {
       {success && <p className="pf-success">{config.labels.productAdded}</p>}
 
       <SubmitButton submitting={submitting} disabled={!canSubmit}>
-        إضافة المنتج
+        إضافة الصنف
       </SubmitButton>
     </form>
   );

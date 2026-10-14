@@ -22,7 +22,7 @@ export default function ProductModal({ product, onClose }) {
         <div className="modal__header">
           <h2 id="product-modal-title" className="modal__title">
             <Box size={22} strokeWidth={1.8} aria-hidden="true" />
-            تفاصيل المنتج
+            تفاصيل الصنف
           </h2>
           <button type="button" className="modal__close" onClick={onClose} aria-label="إغلاق">
             <X size={20} />
