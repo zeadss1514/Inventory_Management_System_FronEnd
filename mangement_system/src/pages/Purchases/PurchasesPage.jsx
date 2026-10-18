@@ -16,9 +16,11 @@ import {
   Warehouse,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireAuth from "../../components/RequireAuth/RequireAuth";
 import Pagination from "../../components/Pagination/Pagination";
 import SortControl from "../../components/SortControl/SortControl";
 import usePurchases from "../../hooks/usePurchases";
+import { hasPermission } from "../../utils/auth";
 import { formatCurrency, formatDate, getPurchasedToName, sumInvoiceItemsCost } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
 import PurchaseModal from "./PurchaseModal";
@@ -26,6 +28,9 @@ import CreateInvoiceModal from "./CreateInvoiceModal";
 import "./PurchasesPage.css";
 
 const PAGE_SIZE = 10;
+
+// Key in the token payload (req.auth) that allows creating an invoice.
+const CREATE_PERMISSION = "Purchase";
 
 // "الكل" fetches /invoice/active, "المسودات" fetches /invoice/draft — see usePurchases.
 const STATUS_TABS = [
@@ -60,9 +65,11 @@ const COLUMNS = [
   { label: "إجراءات", icon: MoreVertical },
 ];
 
-export default function PurchasesPage() {
+function PurchasesContent() {
   const [tab, setTab] = useState("active");
-  const { status, invoices, reload } = usePurchases(tab);
+  const { status, invoices, error, reload } = usePurchases(tab);
+  // UI only — the backend must enforce the permission on POST /purchase as well.
+  const canCreate = hasPermission(CREATE_PERMISSION);
 
   const [search, setSearch] = useState("");
   const [purchaseType, setPurchaseType] = useState("all");
@@ -135,10 +142,12 @@ export default function PurchasesPage() {
         title="المشتريات"
         subtitle="إدارة جميع فواتير المشتريات"
         action={
-          <button type="button" className="new-invoice-btn" onClick={handleCreateInvoice}>
-            <Plus size={18} aria-hidden="true" />
-            انشاء فاتورة
-          </button>
+          canCreate ? (
+            <button type="button" className="new-invoice-btn" onClick={handleCreateInvoice}>
+              <Plus size={18} aria-hidden="true" />
+              انشاء فاتورة
+            </button>
+          ) : undefined
         }
       />
 
@@ -232,7 +241,7 @@ export default function PurchasesPage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message table__message--error">
-                    تعذّر تحميل الفواتير. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    {error?.message || "تعذّر تحميل الفواتير. تأكد من تشغيل الخادم ثم أعد المحاولة."}
                     <button type="button" className="retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -317,9 +326,19 @@ export default function PurchasesPage() {
         <PurchaseModal invoiceId={selectedInvoiceId} onClose={() => setSelectedInvoiceId(null)} />
       )}
 
-      {showCreateModal && (
+      {showCreateModal && canCreate && (
         <CreateInvoiceModal onClose={() => setShowCreateModal(false)} onCreated={reload} />
       )}
     </div>
+  );
+}
+
+// Signed-out visitors are sent to /login before PurchasesContent (and its data
+// hooks) ever run. The modals only render inside the page.
+export default function PurchasesPage() {
+  return (
+    <RequireAuth>
+      <PurchasesContent />
+    </RequireAuth>
   );
 }

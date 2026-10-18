@@ -12,6 +12,7 @@ import {
   Warehouse,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireAuth from "../../components/RequireAuth/RequireAuth";
 import Pagination from "../../components/Pagination/Pagination";
 import SortControl from "../../components/SortControl/SortControl";
 import useWarehouses from "../../hooks/useWarehouses";
@@ -51,8 +52,8 @@ function normalize(warehouse) {
   return { ...warehouse, zoneName, productsCount };
 }
 
-export default function WarehousesPage() {
-  const { status, warehouses, reload } = useWarehouses();
+function WarehousesContent() {
+  const { status, warehouses, error, reload } = useWarehouses();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -191,7 +192,7 @@ export default function WarehousesPage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message table__message--error">
-                    تعذّر تحميل المواقع. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    {error?.message || "تعذّر تحميل المواقع. تأكد من تشغيل الخادم ثم أعد المحاولة."}
                     <button type="button" className="retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -260,5 +261,15 @@ export default function WarehousesPage() {
         <WarehouseModal key={selected._id} warehouseId={selected._id} onClose={closeModal} />
       )}
     </div>
+  );
+}
+
+// Signed-out visitors are sent to /login before WarehousesContent (and its
+// data hook) ever runs. WarehouseModal only renders inside the page.
+export default function WarehousesPage() {
+  return (
+    <RequireAuth>
+      <WarehousesContent />
+    </RequireAuth>
   );
 }

@@ -1,0 +1,67 @@
+.denied-page {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+  padding: 28px 32px;
+}
+
+.denied-card {
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 36px 28px;
+  background: #fff;
+  border: 1px solid #e1e8f4;
+  border-radius: 14px;
+  text-align: center;
+  color: #1a2340;
+}
+
+.denied-card__icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fdecec;
+  color: #c62828;
+}
+
+.denied-card h2 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.denied-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #5b6b8c;
+}
+
+.denied-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  margin-top: 8px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: #2f62c9;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.denied-card__btn:hover {
+  background: #2853ad;
+}
+
+.denied-card__btn:focus-visible {
+  outline: 2px solid #2f62c9;
+  outline-offset: 2px;
+}

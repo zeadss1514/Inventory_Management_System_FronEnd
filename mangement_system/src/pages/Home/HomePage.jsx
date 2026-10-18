@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowLeftRight,
@@ -13,6 +13,7 @@ import {
   Warehouse,
 } from "lucide-react";
 import useHome from "../../hooks/useHome";
+import { getToken } from "../../utils/auth";
 import { formatCurrency, formatDate, getPurchasedToName } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
 import {
@@ -95,7 +96,7 @@ function Row({ icon: Icon, title, meta, value }) {
   );
 }
 
-export default function HomePage() {
+function HomeContent() {
   const { status, invoices, transactions, usages, error, reload } = useHome();
 
   return (
@@ -242,4 +243,13 @@ export default function HomePage() {
       </footer>
     </div>
   );
+}
+
+// Guard: with no token we never render HomeContent, so useHome's request is
+// never sent. The page the user wanted is passed along so LoginPage can send
+// them back to it after signing in.
+export default function HomePage() {
+  const location = useLocation();
+  if (!getToken()) return <Navigate to="/login" replace state={{ from: location }} />;
+  return <HomeContent />;
 }

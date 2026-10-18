@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "../config/api";
+import { authHeader, clearSession } from "../utils/auth";
 
 const asArray = (v) => (Array.isArray(v) ? v : []);
 
@@ -15,6 +17,8 @@ export default function useHome() {
     error: null,
   });
   const [nonce, setNonce] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,7 +26,16 @@ export default function useHome() {
 
     (async () => {
       try {
-        const res = await fetch(API_ENDPOINTS.home, { signal: controller.signal });
+        const res = await fetch(API_ENDPOINTS.home, {
+          signal: controller.signal,
+          headers: authHeader(), // Authorization: Bearer <token>
+        });
+        // Missing / expired / invalid token -> back to the login page.
+        if (res.status === 401) {
+          clearSession();
+          navigate("/login", { replace: true, state: { from: location } });
+          return;
+        }
         let json = null;
         try {
           json = await res.json();
@@ -47,7 +60,8 @@ export default function useHome() {
     })();
 
     return () => controller.abort();
-  }, [nonce]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- location is only read when a 401 happens
+  }, [nonce, navigate]);
 
   const reload = useCallback(() => setNonce((n) => n + 1), []);
   return { ...state, reload };

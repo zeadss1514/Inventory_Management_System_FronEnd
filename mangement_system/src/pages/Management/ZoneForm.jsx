@@ -2,20 +2,12 @@ import { useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { API_ENDPOINTS } from "../../config/api";
 import useZones from "../../hooks/useZones";
-import { readApiResponse } from "../../utils/api";
+import { postJson } from "../../utils/postJson";
+import { putJson } from "../../utils/putJson";
 import "./ProductForm.css";
 import "./ZoneForm.css";
 
 const EMPTY_FORM = { active: true, name: "", city: "", code: "", notes: "" };
-
-async function sendJson(url, method, body) {
-  const res = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return readApiResponse(res); // throws Error(server message) on failure
-}
 
 // Only the keys that actually changed end up in the PUT body.
 function diffPayload(original, current) {
@@ -77,6 +69,7 @@ function ZoneFields({ form, onChange, disabled }) {
             value={form.code}
             onChange={(e) => onChange({ code: e.target.value })}
             disabled={disabled}
+            required
           />
         </div>
       </div>
@@ -118,7 +111,7 @@ function CreateZoneForm() {
     setSuccess(false);
   };
 
-  const canSubmit = form.name.trim() && !submitting;
+  const canSubmit = form.name.trim() && form.code.trim() && !submitting;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -126,7 +119,7 @@ function CreateZoneForm() {
     setSubmitting(true);
     setError(null);
     try {
-      await sendJson(API_ENDPOINTS.createZone, "POST", {
+      await postJson(API_ENDPOINTS.createZone, {
         name: form.name.trim(),
         city: form.city.trim(),
         code: form.code.trim(),
@@ -202,7 +195,7 @@ function EditZoneForm() {
     setSubmitting(true);
     setError(null);
     try {
-      await sendJson(API_ENDPOINTS.updateZone(zoneId), "PUT", changes);
+      await putJson(API_ENDPOINTS.updateZone(zoneId), changes);
       setSuccess(true);
       setOriginal(form); // new baseline for further edits
       reload?.();

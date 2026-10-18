@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { API_ENDPOINTS } from "../../config/api";
 import useProducts from "../../hooks/useProducts";
-import { readApiResponse } from "../../utils/api";
+import { postJson } from "../../utils/postJson";
+import { putJson } from "../../utils/putJson";
 import ProductFields from "./ProductFields";
 import "./ProductForm.css";
 
@@ -46,18 +47,13 @@ function CreateProductForm() {
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch(API_ENDPOINTS.createProduct, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          active: form.active,
-          name: form.name.trim(),
-          code: Number(form.code),
-          description: form.description.trim(),
-          measurementUnit: form.measurementUnit.trim(),
-        }),
+      await postJson(API_ENDPOINTS.createProduct, {
+        active: form.active,
+        name: form.name.trim(),
+        code: Number(form.code),
+        description: form.description.trim(),
+        measurementUnit: form.measurementUnit.trim(),
       });
-      await readApiResponse(res);
       setSuccess(true);
       setForm(EMPTY_FORM);
     } catch (err) {
@@ -129,12 +125,7 @@ function EditProductForm() {
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch(API_ENDPOINTS.updateProduct(productId), {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(changes),
-      });
-      await readApiResponse(res);
+      await putJson(API_ENDPOINTS.updateProduct(productId), changes);
       setSuccess(true);
       setOriginal(form); // new baseline, so further edits diff against the saved state
     } catch (err) {

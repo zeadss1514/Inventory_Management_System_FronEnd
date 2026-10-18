@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-
+import apiFetch from "../utils/apiFetch";
+import { toMessage } from "../utils/errorMessage";
 // status: "loading" | "success" | "error"
 // The API answers { data: [...] }; a bare array works too.
 export default function useFetchList(url) {
@@ -11,11 +12,19 @@ export default function useFetchList(url) {
 
     async function load() {
       try {
-        const res = await fetch(url, { signal: controller.signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const json = await res.json();
-        const items = Array.isArray(json) ? json : json.data ?? [];
+        const res = await apiFetch(url, { signal: controller.signal });
+        // Read the body BEFORE checking it, so the server's own message can be shown.
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {
+          // no body / not JSON
+        }
+        // The API can answer HTTP 200 with { success: false, message } too.
+        if (!res.ok || json?.success === false) {
+          throw new Error(toMessage(json?.message, `تعذّر تحميل البيانات (HTTP ${res.status})`));
+        }
+        const items = Array.isArray(json) ? json : (json?.data ?? []);
         setState({ status: "success", items, error: null });
       } catch (error) {
         if (error.name === "AbortError") return;

@@ -31,7 +31,7 @@ const PRODUCT_COLUMNS = [
 ];
 
 export default function WarehouseModal({ warehouseId, onClose }) {
-  const { status, warehouse, reload } = useWarehouseDetail(warehouseId);
+  const { status, warehouse, error, reload } = useWarehouseDetail(warehouseId);
   const [productSearch, setProductSearch] = useState("");
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function WarehouseModal({ warehouseId, onClose }) {
 
           {status === "error" && (
             <p className="wh-state wh-state--error">
-              تعذّر تحميل بيانات الموقع.
+              {error?.message || "تعذّر تحميل بيانات الموقع."}
               <button type="button" className="wh-retry-btn" onClick={reload}>
                 إعادة المحاولة
               </button>

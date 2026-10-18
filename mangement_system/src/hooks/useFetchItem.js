@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import apiFetch from "../utils/apiFetch";
+import { toMessage } from "../utils/errorMessage";
 
 // status: "loading" | "success" | "error"
 // The API answers { data: {...} }; a bare object works too.
@@ -12,10 +14,18 @@ export default function useFetchItem(url) {
 
     async function load() {
       try {
-        const res = await fetch(url, { signal: controller.signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const json = await res.json();
+        const res = await apiFetch(url, { signal: controller.signal });
+        // Read the body BEFORE checking it, so the server's own message can be shown.
+        let json = null;
+        try {
+          json = await res.json();
+        } catch {
+          // no body / not JSON
+        }
+        // The API can answer HTTP 200 with { success: false, message } too.
+        if (!res.ok || json?.success === false) {
+          throw new Error(toMessage(json?.message, `تعذّر تحميل البيانات (HTTP ${res.status})`));
+        }
         const item = json?.data ?? json;
         setState({ status: "success", item, error: null });
       } catch (error) {

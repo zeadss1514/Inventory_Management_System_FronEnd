@@ -12,6 +12,7 @@ import {
   Settings,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireAuth from "../../components/RequireAuth/RequireAuth";
 import Pagination from "../../components/Pagination/Pagination";
 import SortControl from "../../components/SortControl/SortControl";
 import useSites from "../../hooks/useSites";
@@ -51,8 +52,8 @@ function normalize(site) {
   return { ...site, zoneName, productsCount };
 }
 
-export default function SitesPage() {
-  const { status, sites, reload } = useSites();
+function SitesContent() {
+  const { status, sites, error, reload } = useSites();
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -191,7 +192,7 @@ export default function SitesPage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message table__message--error">
-                    تعذّر تحميل المواقع. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    {error?.message || "تعذّر تحميل المواقع. تأكد من تشغيل الخادم ثم أعد المحاولة."}
                     <button type="button" className="retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -260,5 +261,15 @@ export default function SitesPage() {
         <SiteModal key={selected._id} siteId={selected._id} onClose={closeModal} />
       )}
     </div>
+  );
+}
+
+// Signed-out visitors are sent to /login before SitesContent (and its data
+// hook) ever runs. SiteModal is only rendered inside the page, so it's covered.
+export default function SitesPage() {
+  return (
+    <RequireAuth>
+      <SitesContent />
+    </RequireAuth>
   );
 }

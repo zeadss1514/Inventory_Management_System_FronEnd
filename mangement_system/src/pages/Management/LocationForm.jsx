@@ -3,21 +3,13 @@ import { Loader2 } from "lucide-react";
 import useFetchList from "../../hooks/useFetchList";
 import useProducts from "../../hooks/useProducts";
 import useZones from "../../hooks/useZones";
-import { readApiResponse } from "../../utils/api";
+import { postJson } from "../../utils/postJson";
+import { putJson } from "../../utils/putJson";
 import "./ProductForm.css";
 import "./LocationForm.css";
 
 const EMPTY_FORM = { active: true, name: "", zone: "", address: "" };
 const EMPTY_STOCK = { productId: "", quantity: "", minStock: "", maxStock: "", notes: "" };
-
-async function sendJson(url, method, body) {
-  const res = await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  return readApiResponse(res); // throws Error(server message) on failure
-}
 
 // The list endpoint may return zone as a populated object, an id string, or null.
 function resolveZoneId(zone, zones) {
@@ -130,7 +122,7 @@ function CreateLocationForm({ config }) {
     setSubmitting(true);
     setError(null);
     try {
-      await sendJson(config.endpoints.create, "POST", {
+      await postJson(config.endpoints.create, {
         name: form.name.trim(),
         zone: form.zone || null,
         address: form.address.trim(),
@@ -213,7 +205,7 @@ function EditLocationForm({ config }) {
     setSubmitting(true);
     setError(null);
     try {
-      await sendJson(config.endpoints.update(inventoryId), "PUT", changes);
+      await putJson(config.endpoints.update(inventoryId), changes);
       setSuccess(true);
       setOriginal(form);
       reload?.();
@@ -255,7 +247,7 @@ function EditLocationForm({ config }) {
               disabled={submitting}
               zones={zones}
               zonesLoading={zonesStatus === "loading"}
-        nameLabel={config.labels.name}
+              nameLabel={config.labels.name}
             />
             {!hasChanges && !success && <p className="pf-hint">لم يتم تغيير أي قيمة بعد.</p>}
             {error && <p className="pf-error">{error}</p>}
@@ -301,7 +293,7 @@ function AddProductSection({ inventoryId, onAdded, config }) {
     setSubmitting(true);
     setError(null);
     try {
-      await sendJson(config.endpoints.addProduct(inventoryId), "POST", {
+      await postJson(config.endpoints.addProduct(inventoryId), {
         productId: stock.productId,
         quantity: Number(stock.quantity),
         minStock: Number(stock.minStock),

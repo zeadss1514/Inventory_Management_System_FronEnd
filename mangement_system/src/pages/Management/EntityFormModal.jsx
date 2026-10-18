@@ -5,6 +5,7 @@ import ProductForm from "./ProductForm";
 import InventoryForm from "./InventoryForm";
 import SiteForm from "./SiteForm";
 import ZoneForm from "./ZoneForm";
+import UserForm from "./UserForm";
 import "./EntityFormModal.css";
 
 const TABS = [
@@ -13,12 +14,13 @@ const TABS = [
 ];
 
 // Entity key -> form component. Add new entities here as they get built.
-// ⚠ The "inventory", "site" and "zone" keys must match the key used in MANAGED_ENTITIES (entities.js).
+// Keys match MANAGED_ENTITIES (entities.js).
 const FORMS = {
   product: ProductForm,
   inventory: InventoryForm,
   site: SiteForm,
   zone: ZoneForm,
+  user: UserForm,
 };
 
 export default function EntityFormModal({ entityType, onClose }) {

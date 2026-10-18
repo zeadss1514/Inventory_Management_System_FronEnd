@@ -1,0 +1,64 @@
+.uf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.uf-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.uf-password {
+  position: relative;
+  display: flex;
+}
+
+.uf-password input {
+  flex: 1;
+  padding-inline-end: 42px;
+}
+
+.uf-eye {
+  position: absolute;
+  inset-inline-end: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #5b6b8c;
+  cursor: pointer;
+}
+
+.uf-eye:hover {
+  background: #f4f6fb;
+}
+
+.uf-perms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #e1e8f4;
+  border-radius: 8px;
+}
+
+.uf-perms legend {
+  padding-inline: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b3a5c;
+}
+
+@media (max-width: 560px) {
+  .uf-row {
+    grid-template-columns: 1fr;
+  }
+}

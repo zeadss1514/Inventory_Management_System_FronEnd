@@ -15,10 +15,12 @@ import {
   Warehouse,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireAuth from "../../components/RequireAuth/RequireAuth";
 import Pagination from "../../components/Pagination/Pagination";
 import SortControl from "../../components/SortControl/SortControl";
 import useUsages from "../../hooks/useUsages";
 import useProducts from "../../hooks/useProducts";
+import { hasPermission } from "../../utils/auth";
 import { formatDate } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
 import {
@@ -33,6 +35,9 @@ import CreateUsageModal from "./CreateUsageModal";
 import "./UsagePage.css";
 
 const PAGE_SIZE = 10;
+
+// Key in the token payload (req.auth) that allows creating a usage operation.
+const CREATE_PERMISSION = "Usage";
 
 // "المفعلة" fetches GET /usage, "المسودات" fetches GET /usage/draft — see useUsages.
 const STATUS_TABS = [
@@ -64,9 +69,11 @@ const COLUMNS = [
   { label: "إجراءات", icon: MoreVertical },
 ];
 
-export default function UsagePage() {
+function UsageContent() {
   const [tab, setTab] = useState("active");
-  const { status, usages, reload } = useUsages(tab);
+  const { status, usages, error, reload } = useUsages(tab);
+  // UI only — the backend must enforce the permission on POST /usage as well.
+  const canCreate = CREATE_PERMISSION ? hasPermission(CREATE_PERMISSION) : true;
   const { products } = useProducts();
 
   const [search, setSearch] = useState("");
@@ -142,10 +149,12 @@ export default function UsagePage() {
         title="الاستخدام"
         subtitle="إدارة جميع عمليات استخدام الأصناف"
         action={
-          <button type="button" className="usage-new-btn" onClick={() => setShowCreateModal(true)}>
-            <Plus size={18} aria-hidden="true" />
-            إنشاء عملية استخدام
-          </button>
+          canCreate ? (
+            <button type="button" className="usage-new-btn" onClick={() => setShowCreateModal(true)}>
+              <Plus size={18} aria-hidden="true" />
+              إنشاء عملية استخدام
+            </button>
+          ) : undefined
         }
       />
 
@@ -233,7 +242,7 @@ export default function UsagePage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="usage-table__message usage-table__message--error">
-                    تعذّر تحميل البيانات. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    {error?.message || "تعذّر تحميل البيانات. تأكد من تشغيل الخادم ثم أعد المحاولة."}
                     <button type="button" className="usage-retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -315,7 +324,19 @@ export default function UsagePage() {
 
       {selectedId && <UsageModal usageId={selectedId} onClose={() => setSelectedId(null)} />}
 
-      {showCreateModal && <CreateUsageModal onClose={() => setShowCreateModal(false)} onCreated={reload} />}
+      {showCreateModal && canCreate && (
+        <CreateUsageModal onClose={() => setShowCreateModal(false)} onCreated={reload} />
+      )}
     </div>
+  );
+}
+
+// Signed-out visitors are sent to /login before UsageContent (and its data
+// hooks) ever run. The modals only render inside the page.
+export default function UsagePage() {
+  return (
+    <RequireAuth>
+      <UsageContent />
+    </RequireAuth>
   );
 }

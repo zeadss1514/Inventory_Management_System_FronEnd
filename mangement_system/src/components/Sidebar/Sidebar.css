@@ -89,3 +89,100 @@
   height: 24px;
   flex-shrink: 0;
 }
+
+/* ---------- User block + logout (pinned to the bottom) ---------- */
+/* .sidebar is a flex column, so margin-top:auto pushes this to the bottom;
+   sticky keeps it visible if the menu is taller than the window. */
+.sidebar__user {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--sb-bg);
+  border-top: 1px solid var(--sb-border);
+}
+
+.sidebar__user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--sb-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar__user-avatar {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sb-active);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sidebar__user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sidebar__user-name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar__user-role {
+  color: #9fb0d6;
+  font-size: 12px;
+}
+
+.sidebar__logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sb-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar__logout:hover {
+  background: rgba(239, 83, 80, 0.14);
+  border-color: rgba(239, 83, 80, 0.45);
+  color: #ffc9c9;
+}
+
+.sidebar__logout:focus-visible {
+  outline: 2px solid #8fb1ff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar__logout {
+    transition: none;
+  }
+}

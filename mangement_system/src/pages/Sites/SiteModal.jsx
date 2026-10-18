@@ -30,7 +30,7 @@ const PRODUCT_COLUMNS = [
 ];
 
 export default function SiteModal({ siteId, onClose }) {
-  const { status, site, reload } = useSiteDetail(siteId);
+  const { status, site, error, reload } = useSiteDetail(siteId);
   const [productSearch, setProductSearch] = useState("");
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function SiteModal({ siteId, onClose }) {
 
           {status === "error" && (
             <p className="site-state site-state--error">
-              تعذّر تحميل بيانات الموقع.
+              {error?.message || "تعذّر تحميل بيانات الموقع."}
               <button type="button" className="site-retry-btn" onClick={reload}>
                 إعادة المحاولة
               </button>

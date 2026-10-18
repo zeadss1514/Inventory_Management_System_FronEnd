@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { API_ENDPOINTS } from "../config/api";
+import apiFetch from "../utils/apiFetch";
+import { toMessage } from "../utils/errorMessage";
 
 // The endpoints return stock entries:
 //   { productId: { _id, name, measurementUnit, ... }, stock, minStock, maxStock, notes, _id }
@@ -41,7 +43,7 @@ export default function useDestinationProducts(type, id) {
 
     (async () => {
       try {
-        const res = await fetch(url, { signal: controller.signal });
+        const res = await apiFetch(url, { signal: controller.signal });
         let json = null;
         try {
           json = await res.json();
@@ -49,7 +51,7 @@ export default function useDestinationProducts(type, id) {
           // no JSON body
         }
         if (!res.ok || json?.success === false) {
-          throw new Error(json?.message || "تعذّر تحميل قائمة الأصناف.");
+          throw new Error(toMessage(json?.message, "تعذّر تحميل قائمة المنتجات."));
         }
         const data = json?.data ?? json;
         setState({

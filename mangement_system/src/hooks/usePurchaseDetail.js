@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { API_ENDPOINTS } from "../config/api";
+import apiFetch from "../utils/apiFetch";
 import { pickEntity, readApiResponse } from "../utils/api";
 
 // status: "loading" | "success" | "error"
@@ -13,7 +14,7 @@ export default function usePurchaseDetail(id) {
 
     async function load() {
       try {
-        const res = await fetch(API_ENDPOINTS.purchaseDetail(id), { signal: controller.signal });
+        const res = await apiFetch(API_ENDPOINTS.purchaseDetail(id), { signal: controller.signal });
         const json = await readApiResponse(res);
         // Some endpoints on this API wrap the record in an array alongside a
         // related doc (seen on POST /purchase) — handle that here too.

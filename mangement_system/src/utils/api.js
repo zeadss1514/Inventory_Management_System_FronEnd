@@ -1,3 +1,5 @@
+import { toMessage } from "./errorMessage";
+
 export class ApiError extends Error {}
 
 // Reads a fetch response the way this API is documented to behave: it can
@@ -13,7 +15,7 @@ export async function readApiResponse(res) {
     // No body, or not JSON — fall through with json === null.
   }
   if (!res.ok || json?.success === false) {
-    throw new ApiError(json?.message || `حدث خطأ غير متوقع (HTTP ${res.status})`);
+    throw new ApiError(toMessage(json?.message, `حدث خطأ غير متوقع (HTTP ${res.status})`));
   }
   return json;
 }

@@ -13,9 +13,11 @@ import {
   Warehouse,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireAuth from "../../components/RequireAuth/RequireAuth";
 import Pagination from "../../components/Pagination/Pagination";
 import SortControl from "../../components/SortControl/SortControl";
 import useTransactions from "../../hooks/useTransactions";
+import { hasPermission } from "../../utils/auth";
 import { formatDate, getEntityName } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
 import TransactionModal from "./TransactionModal";
@@ -55,8 +57,11 @@ const COLUMNS = [
   { label: "إجراءات", icon: MoreVertical },
 ];
 
-export default function TransactionsPage() {
-  const { status, transactions, reload } = useTransactions();
+function TransactionsContent() {
+  const { status, transactions, error, reload } = useTransactions();
+  // The create button is only for users whose token has `doTransactions: true`
+  // (req.auth on the server). UI only — the backend must enforce it too.
+  const canCreate = hasPermission("doTransactions");
 
   const [search, setSearch] = useState("");
   const [fromType, setFromType] = useState("all");
@@ -135,10 +140,12 @@ export default function TransactionsPage() {
         subtitle="إدارة جميع عمليات نقل الأصناف بين المواقع والمخازن"
         icon={ArrowLeftRight}
         action={
-          <button type="button" className="new-transaction-btn" onClick={() => setShowCreateModal(true)}>
-            <Plus size={18} aria-hidden="true" />
-            إنشاء تحويل
-          </button>
+          canCreate ? (
+            <button type="button" className="new-transaction-btn" onClick={() => setShowCreateModal(true)}>
+              <Plus size={18} aria-hidden="true" />
+              إنشاء تحويل
+            </button>
+          ) : undefined
         }
       />
 
@@ -241,7 +248,7 @@ export default function TransactionsPage() {
               {status === "error" && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="table__message table__message--error">
-                    تعذّر تحميل التحويلات. تأكد من تشغيل الخادم ثم أعد المحاولة.
+                    {error?.message || "تعذّر تحميل التحويلات. تأكد من تشغيل الخادم ثم أعد المحاولة."}
                     <button type="button" className="retry-btn" onClick={reload}>
                       إعادة المحاولة
                     </button>
@@ -327,7 +334,19 @@ export default function TransactionsPage() {
         <TransactionModal transactionId={selectedTransactionId} onClose={() => setSelectedTransactionId(null)} />
       )}
 
-      {showCreateModal && <CreateTransactionModal onClose={() => setShowCreateModal(false)} />}
+      {showCreateModal && canCreate && (
+        <CreateTransactionModal onClose={() => setShowCreateModal(false)} onCreated={reload} />
+      )}
     </div>
+  );
+}
+
+// Signed-out visitors are sent to /login before TransactionsContent (and its
+// data hook) ever runs. The modals only render inside the page.
+export default function TransactionsPage() {
+  return (
+    <RequireAuth>
+      <TransactionsContent />
+    </RequireAuth>
   );
 }

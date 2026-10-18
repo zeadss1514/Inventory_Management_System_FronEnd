@@ -20,6 +20,7 @@ import { API_ENDPOINTS } from "../../config/api";
 import useDestinationProducts from "../../hooks/useDestinationProducts";
 import useSites from "../../hooks/useSites";
 import useWarehouses from "../../hooks/useWarehouses";
+import { firstRecord, postJson } from "../../utils/postJson";
 import TransactionItemRow from "./TransactionItemRow";
 import "./CreateTransactionModal.css";
 
@@ -49,34 +50,6 @@ const ITEM_COLUMNS = [
 
 let localIdCounter = 0;
 const nextLocalId = () => `local-${++localIdCounter}`;
-
-// POSTs JSON and returns the parsed body. The API answers
-// { success, message, data }, so this throws the server's own `message`
-// whenever success is false or the HTTP status isn't ok, instead of a
-// generic error — callers show err.message directly to the user.
-async function postJson(url, body) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: body !== undefined ? { "Content-Type": "application/json" } : undefined,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
-  let json = null;
-  try {
-    json = await res.json();
-  } catch {
-    // No JSON body — fine for a plain 200/204, but means we have no message on failure.
-  }
-  if (!res.ok || json?.success === false) {
-    throw new Error(json?.message || "حدث خطأ غير متوقع. حاول مرة أخرى.");
-  }
-  return json ?? {};
-}
-
-// The API sometimes wraps the created/updated record in a one- or two-item
-// array instead of a bare object — this always returns the first record either way.
-function firstRecord(data) {
-  return Array.isArray(data) ? data[0] : data;
-}
 
 export default function CreateTransactionModal({ onClose, onCreated }) {
   const [currentStep, setCurrentStep] = useState("from");

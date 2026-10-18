@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Settings2 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import RequireRole from "../../components/RequireRole/RequireRole";
 import { MANAGED_ENTITIES } from "./entities";
 import EntityFormModal from "./EntityFormModal";
 import "./ManagementPage.css";
 
-export default function ManagementPage() {
+// Token roles (req.auth.role) allowed to open this page.
+const ALLOWED_ROLES = ["admin", "superAdmin"];
+
+function ManagementContent() {
   const [openType, setOpenType] = useState(null);
 
   return (
@@ -36,5 +40,16 @@ export default function ManagementPage() {
 
       {openType && <EntityFormModal entityType={openType} onClose={() => setOpenType(null)} />}
     </div>
+  );
+}
+
+// Signed-out -> /login; any other role -> "not allowed". ManagementContent and
+// EntityFormModal never render for them. UI only — the backend must check the
+// role on every create/update endpoint as well.
+export default function ManagementPage() {
+  return (
+    <RequireRole roles={ALLOWED_ROLES}>
+      <ManagementContent />
+    </RequireRole>
   );
 }
