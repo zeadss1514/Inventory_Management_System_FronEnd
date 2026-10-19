@@ -11,7 +11,7 @@ import ManagementPage from "./pages/Management/ManagementPage";
 import UsagePage from "./pages/Usage/UsagePage";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
-import logsPage from "./pages/Logs/LogsPage";
+import LogsPage from "./pages/Logs/LogsPage";
 
 export default function App() {
   return (
@@ -34,7 +34,7 @@ export default function App() {
             <Route path="/purchases" element={<PurchasesPage />} />
             <Route path="/usage" element={<UsagePage />} />
             <Route path="/management" element={<ManagementPage />} />
-            <Route path="/logs" element={<logsPage />} />
+            <Route path="/logs" element={<LogsPage />} />
           </Route>
         </Route>
       </Routes>
