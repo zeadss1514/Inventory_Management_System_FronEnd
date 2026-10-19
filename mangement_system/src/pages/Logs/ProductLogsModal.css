@@ -1,0 +1,389 @@
+/* z-index 50 on purpose: it must sit above the opener (WarehouseModal, also 50,
+   earlier in the DOM) and below the detail modals it can open (also 50, later). */
+.pl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(15, 27, 61, 0.55);
+}
+
+.pl-modal {
+  width: min(920px, 100%);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f9fd;
+  border-radius: 12px;
+  color: #1a2340;
+  overflow: hidden;
+}
+
+.pl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #fff;
+  border-bottom: 1px solid #e1e8f4;
+}
+
+.pl-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pl-title svg {
+  color: #2f62c9;
+}
+
+.pl-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #5b6b8c;
+}
+
+.pl-subtitle strong {
+  color: #1a2340;
+}
+
+.pl-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #2b3a5c;
+  cursor: pointer;
+}
+
+.pl-close:hover {
+  background: #eef4ff;
+}
+
+.pl-body {
+  flex: 1;
+  min-height: 160px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.pl-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px 16px;
+  font-size: 13px;
+  color: #5b6b8c;
+}
+
+.pl-btn {
+  height: 38px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 6px;
+  background: #2f62c9;
+  color: #fff;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pl-btn:hover {
+  background: #2853ad;
+}
+
+.pl-close:focus-visible,
+.pl-btn:focus-visible {
+  outline: 2px solid #2f62c9;
+  outline-offset: 2px;
+}
+
+/* ---------- Logs table (same design as the Logs page) ---------- */
+
+/* ---------- Table ---------- */
+.pl-table-wrap {
+  /* own variables: this table lives in a modal, outside any page wrapper */
+  --blue: #2f62c9;
+  --text: #1a2340;
+  --muted: #5b6b8c;
+  --border: #e1e8f4;
+
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.pl-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.pl-table th,
+.pl-table td {
+  padding: 12px 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pl-table thead th {
+  background: #eef3fb;
+  color: #2b3a5c;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pl-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pl-table tbody tr + tr td {
+  border-top: 1px solid var(--border);
+}
+
+.pl-table tbody tr:hover td {
+  background: #f2f6ff;
+}
+
+.pl-date {
+  white-space: nowrap;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The sentence cell is its own right-to-left island, so Arabic text keeps
+   its order and sits at the right even though the table runs left-to-right. */
+.pl-text {
+  direction: rtl;
+  text-align: start !important;
+  min-width: 380px;
+}
+
+.pl-table__message {
+  padding: 40px 16px !important;
+  color: var(--muted);
+}
+
+.pl-table__message--error {
+  color: #c62828;
+}
+
+.pl-table__message .pl-spin {
+  margin-inline-end: 8px;
+  vertical-align: middle;
+  animation: pl-spin 1s linear infinite;
+}
+
+@keyframes pl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-table__message .pl-spin {
+    animation: none;
+  }
+}
+
+.pl-retry-btn {
+  display: inline-block;
+  margin-inline-start: 10px;
+  height: 34px;
+  padding: 0 18px;
+  border: 1px solid #cfdcf5;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--blue);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pl-retry-btn:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.pl-retry-btn:hover {
+  background: #eef4ff;
+}
+
+/* ---------- Badges ---------- */
+.pl-type,
+.pl-dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pl-type {
+  min-width: 64px;
+  justify-content: center;
+  background: #eef1f8;
+  color: var(--muted);
+}
+
+.pl-type--Invoices {
+  background: #dcf5e3;
+  color: #1f8a4c;
+}
+
+.pl-type--TransactionsInvoices {
+  background: #e4ecfb;
+  color: var(--blue);
+}
+
+.pl-type--Usage {
+  background: #fff1dc;
+  color: #b86e00;
+}
+
+/* Clickable type badge (opens the invoice / usage / transfer modal) */
+.pl-type--link {
+  border: 0;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.pl-type--link:hover {
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+}
+
+.pl-type--link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.pl-type--link svg {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-type--link {
+    transition: none;
+  }
+  .pl-type--link:hover {
+    transform: none;
+  }
+}
+
+.pl-dir--in {
+  background: #dcf5e3;
+  color: #1f8a4c;
+}
+
+.pl-dir--out {
+  background: #fde4e4;
+  color: #c62828;
+}
+
+/* ---------- The sentence ---------- */
+/* font-family is inherited from the app; set it here to use another font,
+   e.g.  font-family: "Tajawal", "Cairo", inherit;  (the font must be loaded). */
+.pl-sentence {
+  --accent: #b9c7e6;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 16px;
+  background: #f7f9fd;
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--accent);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.9;
+  letter-spacing: 0;
+  color: #2b3a5c;
+}
+
+.pl-sentence--Invoices {
+  --accent: #1f8a4c;
+}
+
+.pl-sentence--TransactionsInvoices {
+  --accent: var(--blue);
+}
+
+.pl-sentence--Usage {
+  --accent: #d98200;
+}
+
+.pl-word {
+  color: #5b6b8c;
+}
+
+.pl-chip {
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* quantity: a small pill */
+.pl-chip--qty {
+  min-width: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #e4ecfb;
+  color: var(--blue);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* measurement unit, right after the quantity */
+.pl-chip--unit {
+  margin-inline-start: -4px;
+  color: #5b6b8c;
+  font-weight: 600;
+}
+
+.pl-chip--product {
+  color: var(--text);
+}
+
+.pl-chip--place {
+  color: var(--blue);
+}
+
+.pl-chip--user {
+  padding: 0 10px;
+  border-radius: 6px;
+  background: #eef1f8;
+  color: #2b3a5c;
+  font-weight: 600;
+}
+
+/* not populated / deleted record */
+.pl-chip--missing {
+  color: #9aa7c2;
+  font-weight: 500;
+}

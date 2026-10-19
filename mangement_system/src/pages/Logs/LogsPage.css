@@ -1,0 +1,379 @@
+.logs-page {
+  --blue: #2f62c9;
+  --text: #1a2340;
+  --muted: #5b6b8c;
+  --border: #e1e8f4;
+
+  padding: 28px 32px 40px;
+  color: var(--text);
+}
+
+.logs-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* ---------- Filters ---------- */
+.logs-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.logs-search {
+  position: relative;
+  width: min(320px, 100%);
+}
+
+.logs-search input {
+  width: 100%;
+  height: 40px;
+  padding-inline: 14px 42px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.logs-search input::placeholder {
+  color: #9aa7c2;
+}
+
+.logs-search__icon {
+  position: absolute;
+  inset-inline-end: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.logs-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2b3a5c;
+}
+
+.logs-filter label {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.logs-select {
+  position: relative;
+}
+
+.logs-select select {
+  appearance: none;
+  height: 40px;
+  min-width: 130px;
+  padding-inline: 14px 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.logs-select__chevron {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.logs-select select:focus-visible,
+.logs-search input:focus-visible,
+.logs-retry-btn:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+/* ---------- Table ---------- */
+.logs-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.logs-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.logs-table th,
+.logs-table td {
+  padding: 12px 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.logs-table thead th {
+  background: #eef3fb;
+  color: #2b3a5c;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.logs-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logs-table tbody tr + tr td {
+  border-top: 1px solid var(--border);
+}
+
+.logs-table tbody tr:hover td {
+  background: #f2f6ff;
+}
+
+.logs-date {
+  white-space: nowrap;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The sentence cell is its own right-to-left island, so Arabic text keeps
+   its order and sits at the right even though the table runs left-to-right. */
+.logs-text {
+  direction: rtl;
+  text-align: start !important;
+  min-width: 380px;
+}
+
+.logs-table__message {
+  padding: 40px 16px !important;
+  color: var(--muted);
+}
+
+.logs-table__message--error {
+  color: #c62828;
+}
+
+.logs-table__message .logs-spin {
+  margin-inline-end: 8px;
+  vertical-align: middle;
+  animation: logs-spin 1s linear infinite;
+}
+
+@keyframes logs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logs-table__message .logs-spin {
+    animation: none;
+  }
+}
+
+.logs-retry-btn {
+  display: inline-block;
+  margin-inline-start: 10px;
+  height: 34px;
+  padding: 0 18px;
+  border: 1px solid #cfdcf5;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--blue);
+  font: inherit;
+  cursor: pointer;
+}
+
+.logs-retry-btn:hover {
+  background: #eef4ff;
+}
+
+/* ---------- Badges ---------- */
+.logs-type,
+.logs-dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.logs-type {
+  min-width: 64px;
+  justify-content: center;
+  background: #eef1f8;
+  color: var(--muted);
+}
+
+.logs-type--Invoices {
+  background: #dcf5e3;
+  color: #1f8a4c;
+}
+
+.logs-type--TransactionsInvoices {
+  background: #e4ecfb;
+  color: var(--blue);
+}
+
+.logs-type--Usage {
+  background: #fff1dc;
+  color: #b86e00;
+}
+
+/* Clickable type badge (opens the invoice / usage / transfer modal) */
+.logs-type--link {
+  border: 0;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.logs-type--link:hover {
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+}
+
+.logs-type--link:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.logs-type--link svg {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logs-type--link {
+    transition: none;
+  }
+  .logs-type--link:hover {
+    transform: none;
+  }
+}
+
+.logs-dir--in {
+  background: #dcf5e3;
+  color: #1f8a4c;
+}
+
+.logs-dir--out {
+  background: #fde4e4;
+  color: #c62828;
+}
+
+/* ---------- Footer ---------- */
+.logs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- The sentence ---------- */
+/* font-family is inherited from the app; set it here to use another font,
+   e.g.  font-family: "Tajawal", "Cairo", inherit;  (the font must be loaded). */
+.logs-sentence {
+  --accent: #b9c7e6;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 16px;
+  background: #f7f9fd;
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--accent);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.9;
+  letter-spacing: 0;
+  color: #2b3a5c;
+}
+
+.logs-sentence--Invoices {
+  --accent: #1f8a4c;
+}
+
+.logs-sentence--TransactionsInvoices {
+  --accent: var(--blue);
+}
+
+.logs-sentence--Usage {
+  --accent: #d98200;
+}
+
+.logs-word {
+  color: #5b6b8c;
+}
+
+.logs-chip {
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* quantity: a small pill */
+.logs-chip--qty {
+  min-width: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #e4ecfb;
+  color: var(--blue);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* measurement unit, right after the quantity */
+.logs-chip--unit {
+  margin-inline-start: -4px;
+  color: #5b6b8c;
+  font-weight: 600;
+}
+
+.logs-chip--product {
+  color: var(--text);
+}
+
+.logs-chip--place {
+  color: var(--blue);
+}
+
+.logs-chip--user {
+  padding: 0 10px;
+  border-radius: 6px;
+  background: #eef1f8;
+  color: #2b3a5c;
+  font-weight: 600;
+}
+
+/* not populated / deleted record */
+.logs-chip--missing {
+  color: #9aa7c2;
+  font-weight: 500;
+}
