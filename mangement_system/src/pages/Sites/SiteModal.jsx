@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Barcode,
   Box,
   Hash,
+  History,
   Info,
   Loader2,
   Map,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 import useSiteDetail from "../../hooks/useSiteDetail";
 import { getZoneName } from "../../utils/zone";
+import ProductLogsModal from "../Logs/ProductLogsModal";
 import "./SiteModal.css";
 
 const PRODUCT_COLUMNS = [
@@ -27,17 +29,22 @@ const PRODUCT_COLUMNS = [
   { label: "الحد الأدنى", icon: TrendingDown },
   { label: "الحد الأقصى", icon: TrendingUp },
   { label: "ملاحظات", icon: StickyNote },
+  { label: "السجل", icon: History },
 ];
 
 export default function SiteModal({ siteId, onClose }) {
   const { status, site, error, reload } = useSiteDetail(siteId);
   const [productSearch, setProductSearch] = useState("");
+  // { productId, productName } of the row whose logs are open
+  const [logTarget, setLogTarget] = useState(null);
+  const closeLogs = useCallback(() => setLogTarget(null), []);
 
   useEffect(() => {
-    const onKeyDown = (e) => e.key === "Escape" && onClose();
+    // Esc closes only the top-most modal: while the logs modal is open, leave this one be.
+    const onKeyDown = (e) => e.key === "Escape" && !logTarget && onClose();
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, [onClose, logTarget]);
 
   const zoneName = getZoneName(site?.zone);
 
@@ -53,6 +60,7 @@ export default function SiteModal({ siteId, onClose }) {
   }, [site, productSearch]);
 
   return (
+    <>
     <div className="site-modal-overlay" onClick={onClose}>
       <div
         className="site-modal"
@@ -197,6 +205,23 @@ export default function SiteModal({ siteId, onClose }) {
                           <td>{item.minStock ?? "—"}</td>
                           <td>{item.maxStock ?? "—"}</td>
                           <td>{item.notes?.trim() || "—"}</td>
+                          <td>
+                            {item.productId?._id ? (
+                              <button
+                                type="button"
+                                className="site-log-btn"
+                                onClick={() =>
+                                  setLogTarget({ productId: item.productId._id, productName: item.productId.name })
+                                }
+                                aria-label={`عرض سجل ${item.productId.name ?? "الصنف"} في هذا الموقع`}
+                              >
+                                <History size={14} aria-hidden="true" />
+                                عرض السجل
+                              </button>
+                            ) : (
+                              "—"
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -214,5 +239,18 @@ export default function SiteModal({ siteId, onClose }) {
         </footer>
       </div>
     </div>
+
+    {/* Sibling of the overlay above: a click inside it must not bubble into its "click outside = close". */}
+    {logTarget && (
+      <ProductLogsModal
+        key={logTarget.productId}
+        productId={logTarget.productId}
+        productName={logTarget.productName}
+        placeId={siteId}
+        placeName={site?.name}
+        onClose={closeLogs}
+      />
+    )}
+    </>
   );
 }

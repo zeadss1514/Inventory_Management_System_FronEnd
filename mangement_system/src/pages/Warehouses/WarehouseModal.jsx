@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Barcode,
   Box,
   Hash,
+  History,
   Info,
   Loader2,
   Map,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import useWarehouseDetail from "../../hooks/useWarehouseDetail";
 import { getZoneName } from "../../utils/zone";
+import ProductLogsModal from "../Logs/ProductLogsModal";
 import "./WarehouseModal.css";
 
 const PRODUCT_COLUMNS = [
@@ -28,17 +30,22 @@ const PRODUCT_COLUMNS = [
   { label: "الحد الأدنى", icon: TrendingDown },
   { label: "الحد الأقصى", icon: TrendingUp },
   { label: "ملاحظات", icon: StickyNote },
+  { label: "السجل", icon: History },
 ];
 
 export default function WarehouseModal({ warehouseId, onClose }) {
   const { status, warehouse, error, reload } = useWarehouseDetail(warehouseId);
   const [productSearch, setProductSearch] = useState("");
+  // { productId, productName } of the row whose logs are open
+  const [logTarget, setLogTarget] = useState(null);
+  const closeLogs = useCallback(() => setLogTarget(null), []);
 
   useEffect(() => {
-    const onKeyDown = (e) => e.key === "Escape" && onClose();
+    // Esc closes only the top-most modal: while the logs modal is open, leave this one be.
+    const onKeyDown = (e) => e.key === "Escape" && !logTarget && onClose();
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, [onClose, logTarget]);
 
   const zoneName = getZoneName(warehouse?.zone);
 
@@ -54,6 +61,7 @@ export default function WarehouseModal({ warehouseId, onClose }) {
   }, [warehouse, productSearch]);
 
   return (
+    <>
     <div className="wh-modal-overlay" onClick={onClose}>
       <div
         className="wh-modal"
@@ -198,6 +206,23 @@ export default function WarehouseModal({ warehouseId, onClose }) {
                           <td>{item.minStock ?? "—"}</td>
                           <td>{item.maxStock ?? "—"}</td>
                           <td>{item.notes?.trim() || "—"}</td>
+                          <td>
+                            {item.productId?._id ? (
+                              <button
+                                type="button"
+                                className="wh-log-btn"
+                                onClick={() =>
+                                  setLogTarget({ productId: item.productId._id, productName: item.productId.name })
+                                }
+                                aria-label={`عرض سجل ${item.productId.name ?? "الصنف"} في هذا الموقع`}
+                              >
+                                <History size={14} aria-hidden="true" />
+                                عرض السجل
+                              </button>
+                            ) : (
+                              "—"
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -215,5 +240,18 @@ export default function WarehouseModal({ warehouseId, onClose }) {
         </footer>
       </div>
     </div>
+
+    {/* Sibling of the overlay above: a click inside it must not bubble into its "click outside = close". */}
+    {logTarget && (
+      <ProductLogsModal
+        key={logTarget.productId}
+        productId={logTarget.productId}
+        productName={logTarget.productName}
+        placeId={warehouseId}
+        placeName={warehouse?.name}
+        onClose={closeLogs}
+      />
+    )}
+    </>
   );
 }
