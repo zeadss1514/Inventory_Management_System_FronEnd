@@ -23,7 +23,6 @@ import "./Sidebar.css";
 const navItems = [
   { to: "/", label: "الرئيسية", icon: Home, end: true },
   { to: "/products", label: "الأصناف", icon: Package },
-  { to: "/regions", label: "المناطق", icon: MapPinned },
   { to: "/warehouses", label: "المخازن", icon: Warehouse },
   { to: "/locations", label: "المواقع", icon: MapPin },
   { to: "/users", label: "المستخدمين", icon: Users },

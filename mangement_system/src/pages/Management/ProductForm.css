@@ -50,6 +50,85 @@
   outline-offset: 1px;
 }
 
+/* ---------- Type radio group (معدات / منتجات) ---------- */
+.pf-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.pf-fieldset legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b3a5c;
+}
+
+.pf-radio-group {
+  display: flex;
+  gap: 8px;
+}
+
+.pf-radio {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  border: 1px solid #e1e8f4;
+  border-radius: 8px;
+  background: #fff;
+  color: #2b3a5c;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.pf-radio:hover:not(.pf-radio--disabled) {
+  border-color: #b9c7e6;
+}
+
+.pf-radio input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #2f62c9;
+  cursor: pointer;
+}
+
+.pf-radio--checked {
+  background: #eef3fb;
+  border-color: #2f62c9;
+  color: #2f62c9;
+  font-weight: 600;
+}
+
+.pf-radio--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pf-radio--disabled input {
+  cursor: not-allowed;
+}
+
+/* keyboard focus on the (visible) radio dot highlights the whole pill */
+.pf-radio:focus-within {
+  outline: 2px solid #2f62c9;
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-radio {
+    transition: none;
+  }
+}
+
 .pf-checkbox {
   display: flex;
   align-items: center;

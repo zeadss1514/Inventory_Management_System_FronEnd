@@ -7,12 +7,15 @@ import { putJson } from "../../utils/putJson";
 import ProductFields from "./ProductFields";
 import "./ProductForm.css";
 
-const EMPTY_FORM = { active: true, name: "", code: "", description: "", measurementUnit: "" };
+// New products default to "product"; `type` is "tools" | "product".
+const EMPTY_FORM = { active: true, type: "product", name: "", code: "", description: "", measurementUnit: "" };
 
 // Only the keys that actually changed end up in the PUT body.
 function diffPayload(original, current) {
   const payload = {};
   if (current.active !== original.active) payload.active = current.active;
+  // Older products may have no type yet (""): only send it once one is picked.
+  if (current.type && current.type !== (original.type ?? "")) payload.type = current.type;
   if (current.name.trim() !== (original.name ?? "").trim()) payload.name = current.name.trim();
   if (Number(current.code) !== Number(original.code)) payload.code = Number(current.code);
   if (current.description.trim() !== (original.description ?? "").trim()) {
@@ -49,6 +52,7 @@ function CreateProductForm() {
     try {
       await postJson(API_ENDPOINTS.createProduct, {
         active: form.active,
+        type: form.type,
         name: form.name.trim(),
         code: Number(form.code),
         description: form.description.trim(),
@@ -101,6 +105,7 @@ function EditProductForm() {
     }
     const snapshot = {
       active: !!p.active,
+      type: p.type ?? "", // legacy products without a type show no radio selected
       name: p.name ?? "",
       code: p.code ?? "",
       description: p.description ?? "",

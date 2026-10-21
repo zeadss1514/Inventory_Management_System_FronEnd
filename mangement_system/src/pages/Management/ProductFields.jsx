@@ -1,3 +1,9 @@
+// Product types, as stored in `product.type` / sent to the API.
+export const PRODUCT_TYPES = [
+  { value: "product", label: "منتجات" },
+  { value: "tools", label: "معدات" },
+];
+
 // Shared input fields for both the create and edit product forms.
 export default function ProductFields({ form, onChange, disabled }) {
   return (
@@ -11,6 +17,28 @@ export default function ProductFields({ form, onChange, disabled }) {
         />
         نشط
       </label>
+
+      <fieldset className="pf-field pf-fieldset">
+        <legend>نوع الصنف</legend>
+        <div className="pf-radio-group" role="radiogroup" aria-label="نوع الصنف">
+          {PRODUCT_TYPES.map((t) => (
+            <label
+              key={t.value}
+              className={`pf-radio${form.type === t.value ? " pf-radio--checked" : ""}${disabled ? " pf-radio--disabled" : ""}`}
+            >
+              <input
+                type="radio"
+                name="pf-type"
+                value={t.value}
+                checked={form.type === t.value}
+                onChange={() => onChange({ type: t.value })}
+                disabled={disabled}
+              />
+              {t.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       <div className="pf-field">
         <label htmlFor="pf-name">اسم الصنف</label>
