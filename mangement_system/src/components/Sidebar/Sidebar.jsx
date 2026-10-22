@@ -25,12 +25,12 @@ const navItems = [
   { to: "/products", label: "الأصناف", icon: Package },
   { to: "/warehouses", label: "المخازن", icon: Warehouse },
   { to: "/locations", label: "المواقع", icon: MapPin },
-  { to: "/users", label: "المستخدمين", icon: Users },
+  { to: "/users", label: "المستخدمين", icon: Users, roles: ["admin", "superAdmin"] },
   { to: "/transfers", label: "التنقلات", icon: ArrowLeftRight },
   { to: "/purchases", label: "المشتريات", icon: ShoppingCart },
-  { to: "/usage", label: "الاستخدام", icon: ClipboardList },
+  { to: "/usage", label: "الإستهلاك", icon: ClipboardList },
   { to: "/management", label: "الإدارة", icon: Settings2, roles: ["admin", "superAdmin"] },
-  { to: "/logs", label: "logs", icon: FileText },
+  { to: "/logs", label: "السجلات", icon: FileText },
 ];
 
 // Display names for token roles; an unknown role is shown as-is.

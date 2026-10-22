@@ -418,3 +418,54 @@
   outline: 2px solid #2f62c9;
   outline-offset: 2px;
 }
+
+/* ---------- Tools / products groups (one table each) ---------- */
+.site-group {
+  margin-top: 20px;
+}
+
+.site-group__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.site-group__header h4 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b3a5c;
+}
+
+.site-group__header h4 svg {
+  color: #2f62c9;
+}
+
+.site-group__count {
+  min-width: 26px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: #eef1f8;
+  color: #5b6b8c;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.site-group--product .site-group__count {
+  background: #e4ecfb;
+  color: #2f62c9;
+}
+
+.site-group--tools .site-group__count {
+  background: #fff1dc;
+  color: #b86e00;
+}
+
+.site-group--tools .site-group__header h4 svg {
+  color: #b86e00;
+}

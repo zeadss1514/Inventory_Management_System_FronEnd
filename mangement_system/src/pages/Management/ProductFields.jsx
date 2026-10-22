@@ -1,8 +1,4 @@
-// Product types, as stored in `product.type` / sent to the API.
-export const PRODUCT_TYPES = [
-  { value: "product", label: "منتجات" },
-  { value: "tools", label: "معدات" },
-];
+import { PRODUCT_TYPES } from "../../utils/productType";
 
 // Shared input fields for both the create and edit product forms.
 export default function ProductFields({ form, onChange, disabled }) {

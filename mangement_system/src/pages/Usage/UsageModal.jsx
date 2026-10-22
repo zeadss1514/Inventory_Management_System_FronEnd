@@ -57,7 +57,7 @@ export default function UsageModal({ usageId, onClose }) {
         <header className="usage-modal__header">
           <h2 id="usage-modal-title" className="usage-modal__title">
             <ClipboardList size={22} strokeWidth={1.8} aria-hidden="true" />
-            تفاصيل عملية الاستخدام
+            تفاصيل عملية الإستهلاك
           </h2>
           <button type="button" className="usage-modal__close" onClick={onClose} aria-label="إغلاق">
             <X size={20} />
@@ -128,7 +128,7 @@ export default function UsageModal({ usageId, onClose }) {
               </div>
 
               <section className="um-items">
-                <h3>أصناف الاستخدام</h3>
+                <h3>أصناف الإستهلاك</h3>
                 <div className="um-table-wrap">
                   <table className="um-table">
                     <thead>

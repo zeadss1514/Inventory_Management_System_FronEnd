@@ -11,10 +11,12 @@ import {
   Ruler,
   Search,
   Settings,
+  Tag,
 } from "lucide-react";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Pagination from "../../components/Pagination/Pagination";
 import useProducts from "../../hooks/useProducts";
+import { PRODUCT_TYPES, getProductTypeLabel } from "../../utils/productType";
 import ProductModal from "./ProductModal";
 import "./ProductsPage.css";
 
@@ -26,9 +28,12 @@ const STATUS_OPTIONS = [
   { value: "inactive", label: "غير نشط" },
 ];
 
+const TYPE_OPTIONS = [{ value: "all", label: "الكل" }, ...PRODUCT_TYPES];
+
 const COLUMNS = [
   { label: "الصنف", icon: Box, className: "col-product" },
   { label: "الكود", icon: Hash },
+  { label: "النوع", icon: Tag },
   { label: "الكمية الإجمالية", icon: Layers },
   { label: "وحدة القياس", icon: Ruler },
   { label: "الحالة", icon: Activity },
@@ -40,6 +45,7 @@ export default function ProductsPage() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null); // product shown in the modal
 
@@ -51,13 +57,15 @@ export default function ProductsPage() {
     return products.filter((p) => {
       if (statusFilter === "active" && !p.active) return false;
       if (statusFilter === "inactive" && p.active) return false;
+      // products created before `type` existed only show under "الكل"
+      if (typeFilter !== "all" && p.type !== typeFilter) return false;
       if (!q) return true;
       return (
         String(p.name ?? "").toLowerCase().includes(q) ||
         String(p.code ?? "").includes(q)
       );
     });
-  }, [products, search, statusFilter]);
+  }, [products, search, statusFilter, typeFilter]);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -70,6 +78,10 @@ export default function ProductsPage() {
   };
   const handleStatus = (value) => {
     setStatusFilter(value);
+    setPage(1);
+  };
+  const handleType = (value) => {
+    setTypeFilter(value);
     setPage(1);
   };
 
@@ -90,6 +102,20 @@ export default function ProductsPage() {
                 onChange={(e) => handleStatus(e.target.value)}
               >
                 {STATUS_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} className="select__chevron" aria-hidden="true" />
+            </div>
+          </div>
+
+          <div className="filters__status">
+            <label htmlFor="type-filter">تصفية حسب النوع:</label>
+            <div className="select">
+              <select id="type-filter" value={typeFilter} onChange={(e) => handleType(e.target.value)}>
+                {TYPE_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
                     {o.label}
                   </option>
@@ -174,6 +200,15 @@ export default function ProductsPage() {
                       </div>
                     </td>
                     <td>{product.code ?? "—"}</td>
+                    <td>
+                      {product.type ? (
+                        <span className={`product-type-badge product-type-badge--${product.type}`}>
+                          {getProductTypeLabel(product.type)}
+                        </span>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                     <td>{product.total_quantity ?? "—"}</td>
                     <td>{product.measurementUnit || "—"}</td>
                     <td>

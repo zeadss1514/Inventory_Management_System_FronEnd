@@ -13,6 +13,7 @@ import {
   Ruler,
   Search,
   StickyNote,
+  Tag,
   TrendingDown,
   TrendingUp,
   Warehouse,
@@ -21,6 +22,7 @@ import {
 import useProductDetail from "../../hooks/useProductDetail";
 import { formatCurrency } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
+import { getProductTypeLabel } from "../../utils/productType";
 import "./ProductModal.css";
 
 const LOCATION_COLUMNS = [
@@ -154,6 +156,10 @@ export default function ProductModal({ product: listProduct, onClose }) {
                     {product.freezed && <span className="pd-badge pd-badge--frozen">مجمّد</span>}
                   </div>
                   <p className="pd-card__meta">
+                    <Tag size={15} aria-hidden="true" />
+                    النوع: {getProductTypeLabel(product.type)}
+                  </p>
+                  <p className="pd-card__meta">
                     <Barcode size={15} aria-hidden="true" />
                     الكود: {product.code ?? "—"}
                   </p>
@@ -172,6 +178,16 @@ export default function ProductModal({ product: listProduct, onClose }) {
                     <div className="pd-info__row">
                       <dt>اسم الصنف</dt>
                       <dd>{product.name}</dd>
+                    </div>
+                    <div className="pd-info__row">
+                      <dt>نوع الصنف</dt>
+                      <dd>
+                        {product.type ? (
+                          <span className={`pd-ptype pd-ptype--${product.type}`}>{getProductTypeLabel(product.type)}</span>
+                        ) : (
+                          "—"
+                        )}
+                      </dd>
                     </div>
                     <div className="pd-info__row">
                       <dt>الكود</dt>

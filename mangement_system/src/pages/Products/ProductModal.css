@@ -287,6 +287,29 @@
   color: #1c6ea4;
 }
 
+/* Product type badge (معدات / منتجات) */
+.pd-ptype {
+  display: inline-block;
+  min-width: 60px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  background: #eef1f8;
+  color: #5b6b8c;
+}
+
+.pd-ptype--product {
+  background: #e4ecfb;
+  color: #2f62c9;
+}
+
+.pd-ptype--tools {
+  background: #fff1dc;
+  color: #b86e00;
+}
+
 /* ---------- Quantity cards ---------- */
 .pd-stats {
   display: grid;

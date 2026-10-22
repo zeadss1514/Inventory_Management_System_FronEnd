@@ -146,13 +146,13 @@ function UsageContent() {
   return (
     <div className="usage-page">
       <PageHeader
-        title="الاستخدام"
-        subtitle="إدارة جميع عمليات استخدام الأصناف"
+        title="الإستهلاك"
+        subtitle="إدارة جميع عمليات إستهلاك الأصناف"
         action={
           canCreate ? (
             <button type="button" className="usage-new-btn" onClick={() => setShowCreateModal(true)}>
               <Plus size={18} aria-hidden="true" />
-              إنشاء عملية استخدام
+              إنشاء عملية إستهلاك
             </button>
           ) : undefined
         }
@@ -166,7 +166,7 @@ function UsageContent() {
               value={search}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="ابحث عن موقع أو صنف..."
-              aria-label="ابحث في عمليات الاستخدام"
+              aria-label="ابحث في عمليات الإستهلاك"
             />
             <Search size={18} className="usage-search__icon" aria-hidden="true" />
           </div>
@@ -197,7 +197,7 @@ function UsageContent() {
 
           <div className="usage-tabs">
             <span className="usage-tabs__label">الحالة:</span>
-            <div className="usage-tabs__group" role="tablist" aria-label="حالة عملية الاستخدام">
+            <div className="usage-tabs__group" role="tablist" aria-label="حالة عملية الإستهلاك">
               {STATUS_TABS.map((t) => (
                 <button
                   key={t.value}
@@ -253,7 +253,7 @@ function UsageContent() {
               {status === "success" && pageItems.length === 0 && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="usage-table__message">
-                    لا توجد عمليات استخدام مطابقة.
+                    لا توجد عمليات إستهلاك مطابقة.
                   </td>
                 </tr>
               )}
@@ -302,7 +302,7 @@ function UsageContent() {
                           type="button"
                           className="usage-icon-btn"
                           onClick={() => setSelectedId(usage._id)}
-                          aria-label={`عرض تفاصيل عملية الاستخدام الخاصة بـ ${destName}`}
+                          aria-label={`عرض تفاصيل عملية الإستهلاك الخاصة بـ ${destName}`}
                         >
                           <MoreVertical size={16} />
                         </button>

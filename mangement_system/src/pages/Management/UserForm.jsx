@@ -18,7 +18,7 @@ const EMPTY_FORM = {
 // Key = field name the backend expects (and the permission key in the JWT).
 const PERMISSIONS = [
   { key: "Purchase", label: "إنشاء فواتير الشراء" },
-  { key: "Usage", label: "إنشاء عمليات الاستخدام" },
+  { key: "Usage", label: "إنشاء عمليات الإستهلاك" },
   { key: "doTransactions", label: "إنشاء التحويلات" },
 ];
 

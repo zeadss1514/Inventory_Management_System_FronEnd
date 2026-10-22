@@ -108,7 +108,7 @@
 
 .table {
   width: 100%;
-  min-width: 720px;
+  min-width: 800px;
   border-collapse: collapse;
   font-size: 14px;
 }
@@ -257,6 +257,28 @@
 .badge--frozen {
   background: #e6ebf5;
   color: #4a5875;
+}
+
+/* Product type (معدات / منتجات) — own class name: .type-badge belongs to other pages */
+.product-type-badge {
+  display: inline-block;
+  min-width: 60px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eef1f8;
+  color: #5b6b8c;
+}
+
+.product-type-badge--product {
+  background: #e4ecfb;
+  color: #2f62c9;
+}
+
+.product-type-badge--tools {
+  background: #fff1dc;
+  color: #b86e00;
 }
 
 .icon-btn {

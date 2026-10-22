@@ -212,8 +212,8 @@ export default function CreateUsageModal({ onClose, onCreated }) {
       return;
     }
     const message = usageId
-      ? "عملية الاستخدام محفوظة كمسودة. هل تريد إغلاق النافذة؟"
-      : "هل تريد إلغاء إنشاء عملية الاستخدام؟";
+      ? "عملية الإستهلاك محفوظة كمسودة. هل تريد إغلاق النافذة؟"
+      : "هل تريد إلغاء إنشاء عملية الإستهلاك؟";
     if (window.confirm(message)) onClose();
   }
 
@@ -235,7 +235,7 @@ export default function CreateUsageModal({ onClose, onCreated }) {
         <header className="usage-wizard__header">
           <h2 id="usage-wizard-title" className="usage-wizard__title">
             <ClipboardList size={22} strokeWidth={1.8} aria-hidden="true" />
-            إنشاء عملية استخدام
+            إنشاء عملية إستهلاك
           </h2>
           <button type="button" className="usage-wizard__close" onClick={onClose} aria-label="إغلاق">
             <X size={20} />
@@ -276,7 +276,7 @@ export default function CreateUsageModal({ onClose, onCreated }) {
           {activated ? (
             <div className="uw-success">
               <CheckCircle2 size={40} aria-hidden="true" />
-              <p>تم تفعيل عملية الاستخدام بنجاح.</p>
+              <p>تم تفعيل عملية الإستهلاك بنجاح.</p>
               <button type="button" className="uw-primary-btn" onClick={onClose}>
                 إغلاق
               </button>

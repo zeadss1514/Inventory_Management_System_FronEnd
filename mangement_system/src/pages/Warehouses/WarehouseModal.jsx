@@ -9,12 +9,14 @@ import {
   Map,
   MapPin,
   MapPinned,
+  Package,
   Ruler,
   Search,
   StickyNote,
   TrendingDown,
   TrendingUp,
   Warehouse,
+  Wrench,
   X,
 } from "lucide-react";
 import useWarehouseDetail from "../../hooks/useWarehouseDetail";
@@ -33,6 +35,72 @@ const PRODUCT_COLUMNS = [
   { label: "السجل", icon: History },
 ];
 
+// The place's products are listed in two tables by `productId.type`:
+// tools first, then products. `type` is required on every product, so there is
+// no third group; anything that is not "tools" is listed under products, so an
+// item can never disappear from the modal.
+const GROUPS = [
+  { key: "tools", title: "المعدات", icon: Wrench, empty: "لا توجد معدات مطابقة." },
+  { key: "product", title: "المنتجات", icon: Package, empty: "لا توجد منتجات مطابقة." },
+];
+
+function ItemsTable({ items, emptyText, onOpenLogs }) {
+  return (
+    <div className="wh-table-wrap">
+      <table className="wh-table">
+        <thead>
+          <tr>
+            {PRODUCT_COLUMNS.map(({ label, icon: Icon }) => (
+              <th key={label}>
+                <span className="wh-th-label">
+                  <Icon size={14} aria-hidden="true" />
+                  {label}
+                </span>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {items.length === 0 && (
+            <tr>
+              <td colSpan={PRODUCT_COLUMNS.length} className="wh-table__message">
+                {emptyText}
+              </td>
+            </tr>
+          )}
+
+          {items.map((item) => (
+            <tr key={item._id}>
+              <td className="wh-col-product">{item.productId?.name ?? "—"}</td>
+              <td>{item.productId?.measurementUnit || "—"}</td>
+              <td>{item.productId?.code ?? "—"}</td>
+              <td>{item.stock ?? "—"}</td>
+              <td>{item.minStock ?? "—"}</td>
+              <td>{item.maxStock ?? "—"}</td>
+              <td>{item.notes?.trim() || "—"}</td>
+              <td>
+                {item.productId?._id ? (
+                  <button
+                    type="button"
+                    className="wh-log-btn"
+                    onClick={() => onOpenLogs({ productId: item.productId._id, productName: item.productId.name })}
+                    aria-label={`عرض سجل ${item.productId.name ?? "الصنف"} في هذا الموقع`}
+                  >
+                    <History size={14} aria-hidden="true" />
+                    عرض السجل
+                  </button>
+                ) : (
+                  "—"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function WarehouseModal({ warehouseId, onClose }) {
   const { status, warehouse, error, reload } = useWarehouseDetail(warehouseId);
   const [productSearch, setProductSearch] = useState("");
@@ -49,15 +117,23 @@ export default function WarehouseModal({ warehouseId, onClose }) {
 
   const zoneName = getZoneName(warehouse?.zone);
 
-  const filteredProducts = useMemo(() => {
+  // search filters both lists, then each item goes to the table of its product's type
+  const groups = useMemo(() => {
     const list = Array.isArray(warehouse?.inSiteProducts) ? warehouse.inSiteProducts : [];
     const q = productSearch.trim().toLowerCase();
-    if (!q) return list;
-    return list.filter((item) => {
-      const name = String(item.productId?.name ?? "").toLowerCase();
-      const code = String(item.productId?.code ?? "");
-      return name.includes(q) || code.includes(q);
-    });
+    const matches = q
+      ? list.filter((item) => {
+          const name = String(item.productId?.name ?? "").toLowerCase();
+          const code = String(item.productId?.code ?? "");
+          return name.includes(q) || code.includes(q);
+        })
+      : list;
+
+    const buckets = { tools: [], product: [] };
+    for (const item of matches) {
+      buckets[item.productId?.type === "tools" ? "tools" : "product"].push(item);
+    }
+    return GROUPS.map((g) => ({ ...g, items: buckets[g.key] }));
   }, [warehouse, productSearch]);
 
   return (
@@ -174,60 +250,18 @@ export default function WarehouseModal({ warehouseId, onClose }) {
                   </div>
                 </div>
 
-                <div className="wh-table-wrap">
-                  <table className="wh-table">
-                    <thead>
-                      <tr>
-                        {PRODUCT_COLUMNS.map(({ label, icon: Icon }) => (
-                          <th key={label}>
-                            <span className="wh-th-label">
-                              <Icon size={14} aria-hidden="true" />
-                              {label}
-                            </span>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredProducts.length === 0 && (
-                        <tr>
-                          <td colSpan={PRODUCT_COLUMNS.length} className="wh-table__message">
-                            لا توجد صنفات مطابقة.
-                          </td>
-                        </tr>
-                      )}
-
-                      {filteredProducts.map((item) => (
-                        <tr key={item._id}>
-                          <td className="wh-col-product">{item.productId?.name ?? "—"}</td>
-                          <td>{item.productId?.measurementUnit || "—"}</td>
-                          <td>{item.productId?.code ?? "—"}</td>
-                          <td>{item.stock ?? "—"}</td>
-                          <td>{item.minStock ?? "—"}</td>
-                          <td>{item.maxStock ?? "—"}</td>
-                          <td>{item.notes?.trim() || "—"}</td>
-                          <td>
-                            {item.productId?._id ? (
-                              <button
-                                type="button"
-                                className="wh-log-btn"
-                                onClick={() =>
-                                  setLogTarget({ productId: item.productId._id, productName: item.productId.name })
-                                }
-                                aria-label={`عرض سجل ${item.productId.name ?? "الصنف"} في هذا الموقع`}
-                              >
-                                <History size={14} aria-hidden="true" />
-                                عرض السجل
-                              </button>
-                            ) : (
-                              "—"
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                {groups.map(({ key, title, icon: GroupIcon, empty, items }) => (
+                  <div key={key} className={`wh-group wh-group--${key}`}>
+                    <div className="wh-group__header">
+                      <h4>
+                        <GroupIcon size={16} aria-hidden="true" />
+                        {title}
+                      </h4>
+                      <span className="wh-group__count">{items.length}</span>
+                    </div>
+                    <ItemsTable items={items} emptyText={empty} onOpenLogs={setLogTarget} />
+                  </div>
+                ))}
               </section>
             </>
           )}

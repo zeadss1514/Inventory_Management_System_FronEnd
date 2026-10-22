@@ -55,7 +55,7 @@ export default function LoginPage() {
       <aside className="login-aside" aria-hidden="true">
         <Box size={56} strokeWidth={1.4} />
         <h2>نظام إدارة المخزون</h2>
-        <p>تابع مشترياتك وتنقلات منتجاتك واستخدامها بين المخازن والمواقع من مكان واحد.</p>
+        <p>تابع مشترياتك وتنقلات منتجاتك وإستهلاكها بين المخازن والمواقع من مكان واحد.</p>
       </aside>
 
       <main className="login-main">

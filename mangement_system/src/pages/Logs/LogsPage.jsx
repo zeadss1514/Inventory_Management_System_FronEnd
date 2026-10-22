@@ -27,6 +27,7 @@ import {
   getLogProduct,
   getLogRefId,
   getLogTypeLabel,
+  normalizeLogType,
 } from "../../utils/logHelpers";
 // Existing detail modals, reused as they are.
 import PurchaseModal from "../Purchases/PurchaseModal";
@@ -97,10 +98,11 @@ function toRow(log, index) {
   const time = getLogDate(log);
   const parts = buildLogParts(log);
   const refId = getLogRefId(log);
+  const type = normalizeLogType(log.typeOfInvoice);
   return {
     id: log._id ?? `log-${index}`,
-    type: log.typeOfInvoice,
-    typeLabel: getLogTypeLabel(log.typeOfInvoice),
+    type,
+    typeLabel: getLogTypeLabel(type),
     direction: getLogDirection(log),
     parts,
     place: getLogPlace(log),
@@ -109,7 +111,7 @@ function toRow(log, index) {
     time,
     timeLabel: formatDateTime(time),
     // The type badge opens the details only when we know which document it is.
-    refId: OPENABLE_LOG_TYPES.includes(log.typeOfInvoice) ? refId : null,
+    refId: OPENABLE_LOG_TYPES.includes(type) ? refId : null,
   };
 }
 

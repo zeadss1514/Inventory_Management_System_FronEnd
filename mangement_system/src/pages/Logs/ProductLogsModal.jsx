@@ -20,6 +20,7 @@ import {
   getLogDirection,
   getLogRefId,
   getLogTypeLabel,
+  normalizeLogType,
 } from "../../utils/logHelpers";
 // Existing detail modals, reused as they are.
 import PurchaseModal from "../Purchases/PurchaseModal";
@@ -38,15 +39,16 @@ const COLUMNS = [
 function toRow(log, index) {
   const time = getLogDate(log);
   const refId = getLogRefId(log);
+  const type = normalizeLogType(log.typeOfInvoice);
   return {
     id: log._id ?? `log-${index}`,
-    type: log.typeOfInvoice,
-    typeLabel: getLogTypeLabel(log.typeOfInvoice),
+    type,
+    typeLabel: getLogTypeLabel(type),
     direction: getLogDirection(log),
     parts: buildLogParts(log),
     time,
     timeLabel: formatDateTime(time),
-    refId: OPENABLE_LOG_TYPES.includes(log.typeOfInvoice) ? refId : null,
+    refId: OPENABLE_LOG_TYPES.includes(type) ? refId : null,
   };
 }
 

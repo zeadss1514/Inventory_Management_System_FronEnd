@@ -1,7 +1,9 @@
 // Everything about turning a log record into something readable.
 //
 // Log record fields used (names as given by the backend model):
-//   typeOfInvoice : "Usage" | "Invoices" | "TransactionsInvoices"
+//   typeOfInvoice : "Usage" | "Invoices" | "TransactionsInvoices" | "adding"
+//                   ("adding" = quantity added straight to a place, NOT a purchase:
+//                    it has no invoice, so its badge is never clickable)
 //   Quantity      : number
 //   user          : populated user  -> user.userName
 //   ProductId     : populated product -> ProductId.name
@@ -19,15 +21,24 @@ export const LOG_TYPE_OPTIONS = [
   { value: "Invoices", label: "شراء" },
   { value: "TransactionsInvoices", label: "نقل" },
   { value: "Usage", label: "استهلاك" },
+  { value: "adding", label: "إضافة" },
 ];
 
 const TYPE_LABELS = {
   Invoices: "شراء",
   TransactionsInvoices: "نقل",
   Usage: "استهلاك",
+  adding: "إضافة",
 };
 
-export const getLogTypeLabel = (type) => TYPE_LABELS[type] ?? "غير معروف";
+// The new type is written "adding" in the DB; tolerate "Adding" / "added" too so a
+// casing slip never turns these logs into "unknown". Other types pass through.
+export function normalizeLogType(type) {
+  const t = String(type ?? "").toLowerCase();
+  return t === "adding" || t === "added" ? "adding" : type;
+}
+
+export const getLogTypeLabel = (type) => TYPE_LABELS[normalizeLogType(type)] ?? "غير معروف";
 
 // Reads a display name from a populated reference; a raw id string or a
 // missing value gives the fallback.
@@ -84,7 +95,8 @@ export const LOG_REF_FIELDS = [
   "docId",
 ];
 
-// Types whose details can be opened in an existing modal.
+// Types whose details can be opened in an existing modal. "adding" is NOT here on
+// purpose: it has no invoice / document to open.
 export const OPENABLE_LOG_TYPES = ["Invoices", "Usage", "TransactionsInvoices"];
 
 export function getLogRefId(log) {
@@ -114,6 +126,7 @@ export const getLogProduct = (log) => refOf(log?.ProductId, ["name"]);
 //   Transactions, IN      تم نقل 5 <وحدة> <صنف> إلى <مكان> بواسطة <مستخدم>
 //   Transactions, OUT     تم نقل 5 <وحدة> <صنف> من <مكان> بواسطة <مستخدم>
 //   Transactions, no flag تم نقل 5 <وحدة> <صنف> في <مكان> بواسطة <مستخدم>
+//   Adding                تمت إضافة 5 <وحدة> <صنف> إلى <مكان> بواسطة <مستخدم>
 // <وحدة> = ProductId.measurementUnit (left out when the product has none).
 export function buildLogParts(log) {
   const quantity = Number(log?.Quantity ?? log?.quantity);
@@ -131,11 +144,13 @@ export function buildLogParts(log) {
   // quantity, then its unit right after it
   const amount = [{ kind: "qty", text: qty }, ...(unitName ? [{ kind: "unit", text: unitName }] : [])];
 
-  switch (log?.typeOfInvoice) {
+  switch (normalizeLogType(log?.typeOfInvoice)) {
     case "Usage":
       return [t("تم إستهلاك"), ...amount, product, t("من"), place, t("بواسطة"), user];
     case "Invoices":
       return [t("تم شراء"), ...amount, product, t("إلى"), place, t("بواسطة"), user];
+    case "adding":
+      return [t("تمت إضافة"), ...amount, product, t("إلى"), place, t("بواسطة"), user];
     case "TransactionsInvoices": {
       const direction = getLogDirection(log);
       const link = direction === "in" ? "إلى" : direction === "out" ? "من" : "في";

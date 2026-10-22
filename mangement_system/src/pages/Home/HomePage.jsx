@@ -28,7 +28,7 @@ import "./HomePage.css";
 const QUICK_LINKS = [
   { to: "/purchases", label: "المشتريات", hint: "فواتير الشراء وتفعيلها", icon: ShoppingCart },
   { to: "/transfers", label: "التنقلات", hint: "نقل الأصناف بين الأماكن", icon: ArrowLeftRight },
-  { to: "/usage", label: "الاستخدام", hint: "تسجيل ما يُستهلك من الأصناف", icon: ClipboardList },
+  { to: "/usage", label: "الإستهلاك", hint: "تسجيل ما يُستهلك من الأصناف", icon: ClipboardList },
   { to: "/warehouses", label: "المخازن", hint: "عرض المخازن ومخزونها", icon: Warehouse },
   { to: "/locations", label: "المواقع", hint: "عرض المواقع ومخزونها", icon: MapPin },
   { to: "/products", label: "الأصناف", hint: "قائمة الأصناف ووحداتها", icon: Package },
@@ -109,7 +109,7 @@ function HomeContent() {
             {todayLabel()}
           </span>
           <h1>مرحباً بك في نظام إدارة المخزون</h1>
-          <p>تابع مشترياتك وتنقلات صنفاتك واستخدامها بين المخازن والمواقع من مكان واحد.</p>
+          <p>تابع مشترياتك وتنقلات صنفاتك وإستهلاكها بين المخازن والمواقع من مكان واحد.</p>
         </div>
         <div className="home-hero__actions">
           <Link to="/purchases" className="home-hero__btn home-hero__btn--primary">
@@ -122,7 +122,7 @@ function HomeContent() {
           </Link>
           <Link to="/usage" className="home-hero__btn">
             <ClipboardList size={16} aria-hidden="true" />
-            عملية استخدام
+            عملية إستهلاك
           </Link>
         </div>
       </section>
@@ -144,7 +144,7 @@ function HomeContent() {
       <section className="home-about">
         <h2>كل ما يخص مخزونك في مكان واحد</h2>
         <p>
-          يساعدك النظام على معرفة ما تم شراؤه، وما انتقل من مكان إلى آخر، وما تم استخدامه فعلياً، حتى تبقى أرصدة المخازن
+          يساعدك النظام على معرفة ما تم شراؤه، وما انتقل من مكان إلى آخر، وما تم إستهلاكه فعلياً، حتى تبقى أرصدة المخازن
           والمواقع واضحة ومحدّثة في أي وقت.
         </p>
         <p className="home-about__note">
@@ -211,13 +211,13 @@ function HomeContent() {
 
         <ActivityCard
           icon={ClipboardList}
-          title="آخر عمليات الاستخدام"
+          title="آخر عمليات الإستهلاك"
           to="/usage"
           status={status}
           error={error}
           onRetry={reload}
           items={usages}
-          emptyText="لا توجد عمليات استخدام مفعّلة بعد."
+          emptyText="لا توجد عمليات إستهلاك مفعّلة بعد."
           renderRow={(u) => {
             const type = getUsageTargetType(u);
             const qty = sumUsageQuantity(getUsageItems(u));

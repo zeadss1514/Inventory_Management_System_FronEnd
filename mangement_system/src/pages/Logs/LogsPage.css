@@ -237,6 +237,12 @@
   color: #b86e00;
 }
 
+/* "adding": quantity added straight to a place (not a purchase) */
+.logs-type--adding {
+  background: #efe7fb;
+  color: #6b3fb3;
+}
+
 /* Clickable type badge (opens the invoice / usage / transfer modal) */
 .logs-type--link {
   border: 0;
@@ -327,6 +333,10 @@
 
 .logs-sentence--Usage {
   --accent: #d98200;
+}
+
+.logs-sentence--adding {
+  --accent: #6b3fb3;
 }
 
 .logs-word {
