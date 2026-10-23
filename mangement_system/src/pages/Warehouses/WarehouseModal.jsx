@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Barcode,
   Box,
+  ClipboardList,
   Hash,
   History,
   Info,
+  Layers,
   Loader2,
   Map,
   MapPin,
@@ -29,6 +31,8 @@ const PRODUCT_COLUMNS = [
   { label: "وحدة القياس", icon: Ruler },
   { label: "كود الصنف", icon: Barcode },
   { label: "المخزون الحالي", icon: Hash },
+  { label: "إجمالي الاستخدام", icon: ClipboardList }, // item.TotalUsage
+  { label: "إجمالي الكمية", icon: Layers }, // item.TotalQuantity
   { label: "الحد الأدنى", icon: TrendingDown },
   { label: "الحد الأقصى", icon: TrendingUp },
   { label: "ملاحظات", icon: StickyNote },
@@ -75,6 +79,8 @@ function ItemsTable({ items, emptyText, onOpenLogs }) {
               <td>{item.productId?.measurementUnit || "—"}</td>
               <td>{item.productId?.code ?? "—"}</td>
               <td>{item.stock ?? "—"}</td>
+              <td>{item.TotalUsage ?? "—"}</td>
+              <td>{item.TotalQuantity ?? "—"}</td>
               <td>{item.minStock ?? "—"}</td>
               <td>{item.maxStock ?? "—"}</td>
               <td>{item.notes?.trim() || "—"}</td>

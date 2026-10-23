@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Barcode,
   Box,
-  DollarSign,
+  ClipboardList,
   FileText,
   Hash,
   Info,
@@ -20,7 +20,6 @@ import {
   X,
 } from "lucide-react";
 import useProductDetail from "../../hooks/useProductDetail";
-import { formatCurrency } from "../../utils/invoiceHelpers";
 import { getEntityTypeLabel } from "../../utils/entityType";
 import { getProductTypeLabel } from "../../utils/productType";
 import "./ProductModal.css";
@@ -29,9 +28,10 @@ const LOCATION_COLUMNS = [
   { label: "المكان", icon: MapPinned },
   { label: "النوع", icon: Warehouse },
   { label: "المخزون الحالي", icon: Hash },
+  { label: "إجمالي الاستخدام", icon: ClipboardList }, // entry.TotalUsage
+  { label: "إجمالي الكمية", icon: Layers }, // entry.TotalQuantity
   { label: "الحد الأدنى", icon: TrendingDown },
   { label: "الحد الأقصى", icon: TrendingUp },
-  { label: "آخر سعر شراء", icon: DollarSign },
   { label: "ملاحظات", icon: StickyNote },
 ];
 
@@ -57,9 +57,10 @@ function buildRows(productId, places, type) {
       name: place.name ?? "—",
       type,
       stock: Number(entry.stock) || 0,
+      totalUsage: entry.TotalUsage, // shown as "—" when the entry doesn't have it yet
+      totalQuantity: entry.TotalQuantity,
       minStock: entry.minStock,
       maxStock: entry.maxStock,
-      price: entry.lastPurchasedPrice, // only inventories have it
       notes: entry.notes?.trim() || "—",
     }));
   });
@@ -320,9 +321,10 @@ export default function ProductModal({ product: listProduct, onClose }) {
                               <span className={`pd-type pd-type--${row.type}`}>{getEntityTypeLabel(row.type)}</span>
                             </td>
                             <td className="pd-col-stock">{row.stock}</td>
+                            <td>{row.totalUsage ?? "—"}</td>
+                            <td>{row.totalQuantity ?? "—"}</td>
                             <td>{row.minStock ?? "—"}</td>
                             <td>{row.maxStock ?? "—"}</td>
-                            <td>{row.price == null ? "—" : formatCurrency(row.price)}</td>
                             <td>{row.notes}</td>
                           </tr>
                         );
